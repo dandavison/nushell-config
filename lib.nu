@@ -1,3 +1,7 @@
+def do-async [commands: string] {
+    bash -c $"nu -c '($commands)' &"
+}
+
 def bsp-project [] {
   if ((".bloop" | path type) == "symlink") {
     ".bloop"
