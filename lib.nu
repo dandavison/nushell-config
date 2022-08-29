@@ -25,8 +25,13 @@ export def git-rebase-interactive [n: int] {
   git rebase --interactive $"HEAD~($n)"
 }
 
-export def git-reset [n: int] {
-  git reset $"HEAD~($n)"
+export def git-reset [n: int, --hard] {
+  let commit = $"HEAD~($n)"
+  if $hard {
+    git reset --hard $commit
+  } else {
+    git reset $commit
+  }
 }
 
 export def git-status [] {
