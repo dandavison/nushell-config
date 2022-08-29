@@ -7,7 +7,7 @@ let-env config = ($env.config | merge {
   }
 })
 
-source lib.nu
+use lib.nu *
 source prompt.nu
 source alias.nu
 source env-dan.nu

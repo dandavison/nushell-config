@@ -1,8 +1,8 @@
-def do-async [commands: string] {
+export def do-async [commands: string] {
     bash -c $"nu -c '($commands)' &"
 }
 
-def bsp-project [] {
+export def bsp-project [] {
   if ((".bloop" | path type) == "symlink") {
     ".bloop"
     | path expand
@@ -13,19 +13,23 @@ def bsp-project [] {
   }
 }
 
-def help-find [pattern: string] {
+export def help-find [pattern: string] {
   help --find $pattern
 }
 
-def rg-delta [pattern: string, path: string = "."] {
+export def rg-delta [pattern: string, path: string = "."] {
     rg --json $pattern $path | delta
 }
 
-def git-rebase-interactive [n: int] {
+export def git-rebase-interactive [n: int] {
   git rebase --interactive $"HEAD~($n)"
 }
 
-def git-status [] {
+export def git-reset [n: int] {
+  git reset $"HEAD~($n)"
+}
+
+export def git-status [] {
     def print-line [prefix: string] {
         lines
         | take until $it =~ '\d+ files? changed'
