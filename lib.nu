@@ -44,3 +44,15 @@ export def git-status [] {
     git -c delta.paging=never diff --stat --color=always strato/src strato/docs
     git -c delta.paging=never diff --stat --cached --color=always strato/src strato/docs
 }
+
+export def time-now [] {
+  let time = (date format '%s %f' | split column ' ' sec ns | first)
+  (($time | get sec | into int) * 1sec) + (($time | get ns | into int) * 1ns)
+}
+
+export def time [block: block] {
+  let t0 = (time-now)
+  do $block
+  let t1 = (time-now)
+  $t1 - $t0
+}
