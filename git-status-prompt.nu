@@ -28,17 +28,25 @@ def dan-git-status-prompt-cache-path [] {
 }
 
 def dan-compute-git-status-prompt [] {
-    let unstaged = if ((git diff --quiet | complete).exit_code == 1) {
-        $dan_unstaged_symbol
-    } else {
-        ''
+    let unstaged = {
+        let symbol = if ((git diff --quiet | complete).exit_code == 1) {
+            $dan_unstaged_symbol
+        } else {
+            ''
+        }
+        { unstaged: $symbol}        
     }
-    let staged = if ((git diff --cached --quiet | complete).exit_code == 1) {
-        $dan_staged_symbol
-    } else {
-        ''
+    let staged = {
+        let symbol = if ((git diff --cached --quiet | complete).exit_code == 1) {
+            $dan_staged_symbol
+        } else {
+            ''
+        }
+        { staged: $symbol}
     }
-    $"($unstaged) ($staged)" | str trim
+    let symbols = ([ $unstaged $staged ] | par-each { |it| do $it } | reduce {|a b| $a | merge {$b}})
+
+    $"($symbols | get 'unstaged') ($symbols | get 'staged')" | str trim
 }
 
 def git-status-prompt-refresh-cache [] {
