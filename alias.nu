@@ -1,6 +1,7 @@
 source '~/src/devenv/dotfiles/nu/alias-generated.nu'
 
 alias bat = ^bat --theme GitHub --style header,grid
+alias git-user-public = (git config user.name "Dan Davison"; git config user.email "dandavison7@gmail.com")
 alias gpd = git-status-prompt-delete-cache
 alias gpob = git pull origin (git rev-parse --abbrev-ref HEAD | str trim -r)
 alias r = git-status-prompt-refresh-cache
