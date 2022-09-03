@@ -10,6 +10,7 @@
     | where not ($it | str starts-with 'alias ls=')
     | where not ($it | str starts-with 'alias mk=')
     | where not ($it | str starts-with 'alias path=')
+    | where not ($it | str contains 'open ')
     # Exclude zsh global aliases
     | where not ($it | str starts-with 'alias -g')
     # Use ; for 'AND' semantics

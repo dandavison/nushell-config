@@ -13,12 +13,16 @@ export def bsp-project [] {
   }
 }
 
+export def chrome [path: string] {
+  ^open -a `/Applications/Google Chrome.app/` $path
+}
+
 export def help-find [pattern: string] {
   help --find $pattern
 }
 
-export def rg-delta [pattern: string, path: string = "."] {
-    rg --json $pattern $path | delta
+export def rg-delta [pattern: string, path: string = ".", ...rg_args: string] {
+    rg $rg_args --json $pattern $path | delta
 }
 
 export def git-rebase-interactive [n: int] {
@@ -55,4 +59,8 @@ export def time [block: block] {
   do $block
   let t1 = (time-now)
   $t1 - $t0
+}
+
+export def which-follow [name: string] {
+  which -a $name | each {|it| echo $it | path expand -c ['path'] }
 }
