@@ -1,4 +1,4 @@
-source git-status-prompt.nu
+use git-status-prompt.nu *
 
 def dan-concat [parts: table] {
     $parts
@@ -17,7 +17,7 @@ def dan-create-left-prompt [] {
         {text: $pwd, color: (ansi green_bold)}
         {text: (bsp-project), color: (ansi red_bold)}
         {text: (dan-git-branch), color: (ansi blue_bold)}
-        {text: (dan-git-status-prompt), color: (ansi green_bold)}
+        {text: (git-status-prompt), color: (ansi green_bold)}
     ]
 }
 

@@ -1,20 +1,53 @@
-let dan_git_status_prompt_cache_file = '.dan-git-status-prompt-cache'
-let dan_unstaged_symbol = 'અ'
-let dan_staged_symbol = 'જ'
-let dan_in_progress_symbol = '…'
+def unstaged-symbol [] { 'અ' }
+def staged-symbol [] { 'જ' }
+def in-progress-symbol [] { '…' }
+def git-status-prompt-cache-file [] { '.nu-git-status-prompt-cache'}
 
-def dan-git-status-prompt [] {
-    let cache_path = (dan-git-status-prompt-cache-path)
+export def git-status-prompt [] {
+    let cache_path = (git-status-prompt-cache-path)
     if ($cache_path | empty?) {
         ""
     } else if ($cache_path | path exists) {
         open $cache_path | str trim
     } else {
-        dan-compute-git-status-prompt
+        compute-git-status-prompt
     }
 }
 
-def dan-git-status-prompt-cache-path [] {
+export def compute-git-status-prompt [] {
+    let unstaged = {
+        let symbol = if ((git diff --quiet | complete).exit_code == 1) {
+            (unstaged-symbol)
+        } else {
+            ''
+        }
+        { unstaged: $symbol}        
+    }
+    let staged = {
+        let symbol = if ((git diff --cached --quiet | complete).exit_code == 1) {
+            (staged-symbol)
+        } else {
+            ''
+        }
+        { staged: $symbol}
+    }
+    # Execute the two slow git commands in parallel and merge the results into a single record
+    let symbols = ([ $unstaged $staged ] | par-each { |it| do $it } | reduce {|a b| $a | merge {$b}})
+
+    $"($symbols | get 'unstaged') ($symbols | get 'staged')" | str trim
+}
+
+export def git-status-prompt-refresh-cache [] {
+    let cache_path = (git-status-prompt-cache-path)
+    echo (in-progress-symbol) | save $cache_path
+    do-async $"use ($nu.config-path | path expand | path dirname)/git-status-prompt.nu *; compute-git-status-prompt | save ($cache_path)"
+}
+
+export def git-status-prompt-delete-cache [] {
+    rm -f (git-status-prompt-cache-path)
+}
+
+def git-status-prompt-cache-path [] {
     let dir = if ('.git' | path exists) {
         '.'
     } else {
@@ -23,38 +56,6 @@ def dan-git-status-prompt-cache-path [] {
     if ($dir | empty?) {
         null
     } else {
-        $dir | path join $dan_git_status_prompt_cache_file
+        $dir | path join (git-status-prompt-cache-file)
     }
-}
-
-def dan-compute-git-status-prompt [] {
-    let unstaged = {
-        let symbol = if ((git diff --quiet | complete).exit_code == 1) {
-            $dan_unstaged_symbol
-        } else {
-            ''
-        }
-        { unstaged: $symbol}        
-    }
-    let staged = {
-        let symbol = if ((git diff --cached --quiet | complete).exit_code == 1) {
-            $dan_staged_symbol
-        } else {
-            ''
-        }
-        { staged: $symbol}
-    }
-    let symbols = ([ $unstaged $staged ] | par-each { |it| do $it } | reduce {|a b| $a | merge {$b}})
-
-    $"($symbols | get 'unstaged') ($symbols | get 'staged')" | str trim
-}
-
-def git-status-prompt-refresh-cache [] {
-    let cache_path = (dan-git-status-prompt-cache-path)
-    echo $dan_in_progress_symbol | save $cache_path
-    do-async $"source ~/src/devenv/dotfiles/nu/git-status-prompt.nu; dan-compute-git-status-prompt | save ($cache_path)"
-}
-
-def git-status-prompt-delete-cache [] {
-    rm -f (dan-git-status-prompt-cache-path)
 }
