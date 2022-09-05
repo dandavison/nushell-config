@@ -1,30 +1,30 @@
+# This file contains an example nushell prompt, making use of the async-git-prompt module.
 use async-git-prompt.nu *
 
-def dan-concat [parts: table] {
+def prompt-concat [parts: table] {
     $parts
     | where (not ($it.text | empty?))
     | each { |it| $"($it.color)($it.text)" }
     | str collect ' '
 }
 
-def dan-git-branch [] {
+def prompt-git-branch [] {
     do -i { git rev-parse --abbrev-ref HEAD | str trim -r}
 }
 
-def dan-create-left-prompt [] {
-    let pwd = ($env.PWD | str replace $env.HOME '~' | str replace '~/workspace' '...')
-    dan-concat [
+def prompt-create-left-prompt [] {
+    let pwd = ($env.PWD | str replace $env.HOME '~')
+    prompt-concat [
         {text: $pwd, color: (ansi green_bold)}
-        {text: (bsp-project), color: (ansi red_bold)}
-        {text: (dan-git-branch), color: (ansi blue_bold)}
-        {text: (git-status-prompt), color: (ansi green_bold)}
+        {text: (prompt-git-branch), color: (ansi blue_bold)}
+        {text: (async-git-prompt-string), color: (ansi green_bold)}
     ]
 }
 
-def dan-create-right-prompt [] {
+def prompt-create-right-prompt [] {
     $nothing
 }
 
-let-env PROMPT_COMMAND = { dan-create-left-prompt }
-let-env PROMPT_COMMAND_RIGHT = { dan-create-right-prompt }
+let-env PROMPT_COMMAND = { prompt-create-left-prompt }
+let-env PROMPT_COMMAND_RIGHT = { prompt-create-right-prompt }
 let-env PROMPT_INDICATOR = { $" (ansi green_bold)〉" }

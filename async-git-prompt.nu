@@ -1,20 +1,45 @@
+# This module exports commands for creating a nushell prompt that computes git status (staged and
+# unstaged changes) asynchronously. This can be useful in large git repos when it is slow to obtain
+# this information synchronously.
+
+# To use this module:
+#
+# 1. Use the command `async-git-prompt-string` in your own `PROMPT_COMMAND`.
+#    (The file prompt.nu contains an example.)
+#    At this point, your prompt will be computing the information synchronously, because the cache
+#    file does not yet exist.
+
+# 2. In a repo where git is slow, run the command `async-git-prompt-refresh-cache`.
+#    Now, your prompt will be fast, but it also won't update automatically. You could investigate a good
+#    way to invalidate the cache automatically, but the manual alternative is:
+
+# 3. Whenever you think your prompt might be stale, re-run the command `async-git-prompt-refresh-cache`.
+#    Your prompt will update on one of the next times that you hit <enter>.
+
+# 4. It will probably be convenient to alias this, e.g.
+#
+#    alias r = async-git-prompt-refresh-cache
+
+# 5. To go back to synchronous mode, run `async-git-prompt-delete-cache`.
+
+
 def unstaged-symbol [] { 'અ' }
 def staged-symbol [] { 'જ' }
 def in-progress-symbol [] { '…' }
-def git-status-prompt-cache-file [] { '.nu-async-git-prompt-cache'}
+def cache-file [] { '.nu-async-git-prompt-cache'}
 
-export def git-status-prompt [] {
-    let cache_path = (git-status-prompt-cache-path)
+export def async-git-prompt-string [] {
+    let cache_path = (cache-path)
     if ($cache_path | empty?) {
         ""
     } else if ($cache_path | path exists) {
         open $cache_path | str trim
     } else {
-        compute-git-status-prompt
+        async-git-prompt-compute-sync
     }
 }
 
-export def compute-git-status-prompt [] {
+export def async-git-prompt-compute-sync [] {
     let unstaged = {
         let symbol = if ((git diff --quiet | complete).exit_code == 1) {
             (unstaged-symbol)
@@ -37,17 +62,17 @@ export def compute-git-status-prompt [] {
     $"($symbols | get 'unstaged') ($symbols | get 'staged')" | str trim
 }
 
-export def git-status-prompt-refresh-cache [] {
-    let cache_path = (git-status-prompt-cache-path)
+export def async-git-prompt-refresh-cache [] {
+    let cache_path = (cache-path)
     echo (in-progress-symbol) | save $cache_path
-    do-async $"use ($nu.config-path | path expand | path dirname)/async-git-prompt.nu *; compute-git-status-prompt | save ($cache_path)"
+    do-async $"use ($nu.config-path | path expand | path dirname)/async-git-prompt.nu *; async-git-prompt-compute-sync | save ($cache_path)"
 }
 
-export def git-status-prompt-delete-cache [] {
-    rm -f (git-status-prompt-cache-path)
+export def async-git-prompt-delete-cache [] {
+    rm -f (cache-path)
 }
 
-def git-status-prompt-cache-path [] {
+def cache-path [] {
     let dir = if ('.git' | path exists) {
         '.'
     } else {
@@ -56,6 +81,6 @@ def git-status-prompt-cache-path [] {
     if ($dir | empty?) {
         null
     } else {
-        $dir | path join (git-status-prompt-cache-file)
+        $dir | path join (cache-file)
     }
 }
