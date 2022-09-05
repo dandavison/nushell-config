@@ -84,7 +84,7 @@ alias gg  = git grep -n
 alias ghci  = ghci -fwarn-incomplete-patterns
 alias ghrvw  = gh repo view --web
 alias gitk-all  = gitk --all --simplify-by-decoration
-alias git-init   = (git init ; git-user-public && git commit --allow-empty -m "∅")
+alias git-init   = (git init ; git-user-public ; git commit --allow-empty -m "∅")
 alias git-no-config  = GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG=/dev/null HOME=/dev/null git
 alias git-user-public   = (git config user.name "Dan Davison" ; git config user.email "dandavison7@gmail.com")
 alias git-user-twitter   = (git config user.name "Dan Davison" ; git config user.email "ddavison@twitter.com")
@@ -101,7 +101,7 @@ alias glsp  = _gl -p --stat
 alias gls  = _gl --stat
 alias gm  = git merge
 alias gnp  = git --no-pager
-alias gpom   = (git fetch origin master ; git branch -d master && git branch master origin/master)
+alias gpom   = (git fetch origin master ; git branch -d master ; git branch master origin/master)
 alias gpo  = git pull origin
 alias gp  = git pull
 alias gr1  = git reset HEAD~1
@@ -196,10 +196,10 @@ alias tl  = topleft
 alias tmux-current-session  = tmux display-message -p "#S"
 alias tns  = tmux new-session
 alias tsc  = tmux switch-client -l
-alias virtualenv-temp   = (rm -fr /tmp/v ; virtualenv /tmp/v && . /tmp/v/bin/activate)
+alias virtualenv-temp   = (rm -fr /tmp/v ; virtualenv /tmp/v ; . /tmp/v/bin/activate)
 alias vpro  = vagrant provision
 alias vssh  = vagrant ssh
-alias vscode-list-contexts  = (cd ~/src-3p/vscode ; rg --color=always RawContextKey)
+alias vscode-list-contexts  = (cd ~/src/vscode ; rg --color=always RawContextKey)
 alias xenops-cache-size   = (fd . /tmp/xenops-cache | wc -l)
 alias xhyve-nsenter  = docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i
 alias z-exec  = exec zsh

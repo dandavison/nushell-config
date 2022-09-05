@@ -6,15 +6,15 @@
     | where not ($it | str contains '$(')
     # Exclude for/while loops
     | where not ($it | str contains '; do ')
-    # Exclude aliases for nu builtins
+    # Exclude/handle aliases conflicting with builtins
     | where not ($it | str starts-with 'alias ls=')
     | where not ($it | str starts-with 'alias mk=')
     | where not ($it | str starts-with 'alias path=')
-    | where not ($it | str contains 'open ')
+    | str replace -a 'open' '^open'
     # Exclude zsh global aliases
     | where not ($it | str starts-with 'alias -g')
     # Use ; for 'AND' semantics
-    | str replace '&&' ';'
+    | str replace -a '&&' ';'
     # Strip quotes
     | str replace "alias ([^=]+) *=' *([^']+)'" 'alias $1 = $2'
     | str replace 'alias ([^=]+) *=" *([^"]+)"' 'alias $1 = $2'
