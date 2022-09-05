@@ -1,4 +1,4 @@
-use git-status-prompt.nu *
+use async-git-prompt.nu *
 
 def dan-concat [parts: table] {
     $parts

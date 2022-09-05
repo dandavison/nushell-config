@@ -1,7 +1,7 @@
 def unstaged-symbol [] { 'અ' }
 def staged-symbol [] { 'જ' }
 def in-progress-symbol [] { '…' }
-def git-status-prompt-cache-file [] { '.nu-git-status-prompt-cache'}
+def git-status-prompt-cache-file [] { '.nu-async-git-prompt-cache'}
 
 export def git-status-prompt [] {
     let cache_path = (git-status-prompt-cache-path)
@@ -40,7 +40,7 @@ export def compute-git-status-prompt [] {
 export def git-status-prompt-refresh-cache [] {
     let cache_path = (git-status-prompt-cache-path)
     echo (in-progress-symbol) | save $cache_path
-    do-async $"use ($nu.config-path | path expand | path dirname)/git-status-prompt.nu *; compute-git-status-prompt | save ($cache_path)"
+    do-async $"use ($nu.config-path | path expand | path dirname)/async-git-prompt.nu *; compute-git-status-prompt | save ($cache_path)"
 }
 
 export def git-status-prompt-delete-cache [] {
