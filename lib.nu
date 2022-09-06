@@ -1,7 +1,3 @@
-export def do-async [commands: string] {
-    bash -c $"nu -c '($commands)' &"
-}
-
 export def bsp-project [] {
   if ((".bloop" | path type) == "symlink") {
     ".bloop"
@@ -17,12 +13,8 @@ export def chrome [path: string] {
   ^open -a `/Applications/Google Chrome.app/` $path
 }
 
-export def help-find [pattern: string] {
-  help --find $pattern
-}
-
-export def rg-delta [pattern: string, path: string = ".", ...rg_args: string] {
-    rg $rg_args --json $pattern $path | delta
+export def do-async [commands: string] {
+    bash -c $"nu -c '($commands)' &"
 }
 
 export def git-rebase-interactive [n: int] {
@@ -47,6 +39,14 @@ export def git-status [] {
     # અજ
     git -c delta.paging=never diff --stat --color=always strato/src strato/docs
     git -c delta.paging=never diff --stat --cached --color=always strato/src strato/docs
+}
+
+export def help-find [pattern: string] {
+  help --find $pattern
+}
+
+export def rg-delta [pattern: string, path: string = ".", ...rg_args: string] {
+    rg $rg_args --json $pattern $path | delta
 }
 
 export def time-now [] {
