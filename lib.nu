@@ -45,6 +45,10 @@ export def help-find [pattern: string] {
   help --find $pattern
 }
 
+export def kill-all [name: string] {
+  ps | where name == $name | get pid | each { |it| kill $it }
+}
+
 export def rg-delta [pattern: string, path: string = ".", ...rg_args: string] {
     rg $rg_args --json $pattern $path | delta
 }
