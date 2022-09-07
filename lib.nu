@@ -21,8 +21,12 @@ export def git-rebase-interactive [n: int] {
   git rebase --interactive $"HEAD~($n)"
 }
 
-export def git-reset [n: int, --hard] {
-  let commit = $"HEAD~($n)"
+export def git-reset [arg, --hard] {
+  let commit = if ($arg | describe) == int {
+    $"HEAD~($arg)"
+  } else {
+    $arg
+  }
   if $hard {
     git reset --hard $commit
   } else {
