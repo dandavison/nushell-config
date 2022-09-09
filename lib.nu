@@ -17,8 +17,13 @@ export def do-async [commands: string] {
     bash -c $"nu -c '($commands)' &"
 }
 
-export def git-rebase-interactive [n: int] {
-  git rebase --interactive $"HEAD~($n)"
+export def git-rebase-interactive [arg] {
+  let commit = if ($arg | describe) == int {
+    $"HEAD~($arg)"
+  } else {
+    $arg
+  }
+  git rebase --interactive $commit
 }
 
 export def git-reset [arg, --hard] {
@@ -50,7 +55,7 @@ export def help-find [pattern: string] {
 }
 
 export def kill-all [name: string] {
-  ps | where name == $name | get pid | each { |it| kill $it }
+  ps | where name == $name | get pid | each { |it| kill -9 $it }
 }
 
 export def rg-delta [pattern: string, path: string = ".", ...rg_args: string] {
