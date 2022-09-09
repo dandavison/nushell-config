@@ -8,6 +8,7 @@ let-env config = ($env.config | merge {
 })
 
 use lib.nu *
+use git-stash.nu *
 source prompt.nu
 source alias.nu
 source env-dan.nu
