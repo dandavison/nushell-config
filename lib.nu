@@ -66,7 +66,7 @@ export def rg-delta [
 ] {
   let fixed_strings = if $fixed_strings { "-F" } else { "" }
   let ignore_case = if $ignore_case { "-i" } else { "" }
-  let rg_args = ([$fixed_strings $ignore_case] | str collect " " | str trim)
+  let rg_args = ([$fixed_strings $ignore_case] | str join " " | str trim)
   # echo $"rg ($rg_args) --json ($pattern) ($path) | delta"
   rg $rg_args --json $pattern $path | delta
 }
