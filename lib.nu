@@ -58,8 +58,17 @@ export def kill-all [name: string] {
   ps | where name == $name | get pid | each { |it| kill -9 $it }
 }
 
-export def rg-delta [pattern: string, path: string = ".", ...rg_args: string] {
-    rg $rg_args --json $pattern $path | delta
+export def rg-delta [
+  pattern: string,
+  path: string = ".",
+  --fixed-strings (-F),
+  --ignore-case (-i),
+] {
+  let fixed_strings = if $fixed_strings { "-F" } else { "" }
+  let ignore_case = if $ignore_case { "-i" } else { "" }
+  let rg_args = ([$fixed_strings $ignore_case] | str collect " " | str trim)
+  # echo $"rg ($rg_args) --json ($pattern) ($path) | delta"
+  rg $rg_args --json $pattern $path | delta
 }
 
 export def time-now [] {
