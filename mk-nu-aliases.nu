@@ -1,3 +1,5 @@
+#!/usr/bin/env nu
+
 (open ~/src/devenv/shell-config/alias.sh
     | lines
     # Exclude things other than one-liner alias definitions
