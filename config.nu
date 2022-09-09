@@ -504,6 +504,7 @@ let-env config = {
 }
 
 let-env NU_LIB_DIRS = [
-  ($nu.config-path | path expand | path dirname)
+  ($nu.config-path | path dirname | path expand)
+  ($nu.config-path | path dirname | path expand | path join "lib")
 ]
 source '~/src/devenv/dotfiles/nu/init.nu'
