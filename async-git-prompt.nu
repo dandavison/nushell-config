@@ -1,1 +1,1 @@
-/Users/ddavison/tmp/3p/nushell/nu_scripts/prompt/async_git_prompt/async-git-prompt.nu
+/Users/ddavison/src/nushell/nu_scripts/prompt/async_git_prompt/async-git-prompt.nu
