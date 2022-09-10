@@ -30,14 +30,3 @@ def age_of_oldest_process [pattern: string] {
     )
     $times | math max
 }
-
-def containing_repo [path: string] {
-    let dir = ($path | path dirname)
-    if $dir == $path {
-        $dir
-    } else if ($dir | path join ".git" | path exists) {
-        $dir
-    } else {
-        get_repo $dir
-    }
-}

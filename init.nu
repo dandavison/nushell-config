@@ -9,6 +9,7 @@ let-env config = ($env.config | merge {
 
 source alias.nu
 use lib.nu *
+use project.nu *
 use git-stash.nu *
 source prompt.nu
 source env-dan.nu

@@ -17,6 +17,14 @@ export def do-async [commands: string] {
     bash -c $"nu -c '($commands)' &"
 }
 
+export def fzf-cmd [--help (-h)] {
+  str join "\n" | ^fzf --info=hidden | str trim -r
+}
+
+export def fzf-app [] {
+  ^open (ls /Applications/*.app | get name | fzf-cmd)
+}
+
 export def git-rebase-interactive [arg] {
   let commit = if ($arg | describe) == int {
     $"HEAD~($arg)"

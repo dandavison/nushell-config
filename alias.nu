@@ -2,6 +2,8 @@ source ~/src/devenv/dotfiles/nu/alias-generated.nu
 
 alias \ = exec nu
 alias bat = ^bat --theme GitHub --style header,grid
+alias cdd = project-cd
+alias d = probable-dir
 alias en = exec nu
 alias gd = git diff $env.GIT_PATHS
 alias gdcs = git diff --cached $env.GIT_PATHS
@@ -26,7 +28,6 @@ alias hf = help-find
 alias lss = (ls | get name | str join $"  ")
 alias mk = mkdir
 alias p = probable-path
-alias d = probable-dir
 alias r = async-git-prompt-refresh-cache
 alias rgd = rg-delta
 alias v = vscode
