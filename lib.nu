@@ -66,6 +66,26 @@ export def kill-all [name: string] {
   ps | where name == $name | get pid | each { |it| kill -9 $it }
 }
 
+export def nu-binary [which?: string] {
+  let link = '~/bin/nu'
+  if ($which != null) {
+    let target = if $which == 'release' {
+      '~/src/nushell/nushell/target/release/nu'
+    } else if $which == 'debug' {
+      '~/src/nushell/nushell/target/debug/nu'
+    } else if $which == 'homebrew' {
+      '/usr/local/bin/nu'
+    } else {
+      1 / 0
+    }
+    ^ln -fs ($target | path expand) $link
+  }
+  echo (ls -ld ($link | path dirname))
+  | where name =~ 'nu$'
+  | where type == 'symlink'
+  | select name type target
+}
+
 export def rg-delta [
   pattern: string,
   path: string = ".",
