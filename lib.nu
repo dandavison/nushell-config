@@ -18,7 +18,7 @@ export def do-async [commands: string] {
 }
 
 export def fzf-cmd [--help (-h)] {
-  str join "\n" | ^fzf --info=hidden | str trim -r
+  str collect "\n" | ^fzf --info=hidden | str trim -r
 }
 
 export def fzf-app [] {
