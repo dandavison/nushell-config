@@ -86,17 +86,26 @@ export def nu-binary [which?: string] {
   | select name type target
 }
 
+export def pid [] {
+  pstree | rg -B 5 $nu.pid
+}
+
 export def rg-delta [
   pattern: string,
   path: string = ".",
   --fixed-strings (-F),
   --ignore-case (-i),
 ] {
-  let fixed_strings = if $fixed_strings { "-F" } else { "" }
-  let ignore_case = if $ignore_case { "-i" } else { "" }
-  let rg_args = ([$fixed_strings $ignore_case] | str join " " | str trim)
-  # echo $"rg ($rg_args) --json ($pattern) ($path) | delta"
-  rg $rg_args --json $pattern $path | delta
+  # TODO: nicer way
+  if ($fixed_strings || $ignore_case) {
+    let fixed_strings = if $fixed_strings { "-F" } else { "" }
+    let ignore_case = if $ignore_case { "-i" } else { "" }
+    let rg_args = ([$fixed_strings $ignore_case] | str collect " " | str trim)
+    # echo $"rg ($rg_args) --json ($pattern) ($path) | delta"
+    rg $rg_args --json $pattern $path | delta  
+  } else {
+    rg --json $pattern $path | delta
+  }
 }
 
 export def time-now [] {

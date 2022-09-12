@@ -14,5 +14,6 @@ let-env INFOPATH = '/opt/homebrew/share/info'
 let-env LESS = '-FIRXS'
 let-env LS_COLORS = (^vivid generate one-light | str trim)
 let-env MANPATH = '/opt/homebrew/share/man'
+let-env NU_MAX_NORMALIZED_EDIT_DISTANCE_FOR_SUGGESTIONS = 0.6
+let-env NU_MIN_WORD_LENGTH_FOR_SUGGESTIONS = 3
 let-env OPEN_IN_EDITOR = '~/bin/code'
-

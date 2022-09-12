@@ -6,7 +6,7 @@ alias cdd = project-cd
 alias d = probable-dir
 alias en = exec nu
 alias gd = git diff $env.GIT_PATHS
-alias gdcs = git diff --cached $env.GIT_PATHS
+alias gdc = git diff --cached $env.GIT_PATHS
 alias gdcs = gdsc
 alias gds = git diff --stat=200,200 $env.GIT_PATHS
 alias gdsc = git diff --cached --stat=200,200 $env.GIT_PATHS
