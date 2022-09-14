@@ -30,3 +30,4 @@ alias p = probable-path
 alias r = async-git-prompt-refresh-cache
 alias rgd = rg-delta
 alias v = vscode
+alias vs = view-source

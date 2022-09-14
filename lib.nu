@@ -13,16 +13,22 @@ export def chrome [path: string] {
   ^open -a `/Applications/Google Chrome.app/` $path
 }
 
-export def do-async [commands: string] {
+export def exec-async [commands: string] {
     bash -c $"nu -c '($commands)' &"
+}
+
+export def do-async [block: block] {
+  # block may call bultins and external commands only
+  bash -c $"nu -c 'do (view-source $block)' &"
 }
 
 export def fzf-cmd [--help (-h)] {
   str collect "\n" | ^fzf --info=hidden | str trim -r
 }
 
-export def fzf-app [] {
-  ^open (ls /Applications/*.app | get name | fzf-cmd)
+export def app [] {
+  let name = (ls /Applications/*.app | get name | path basename | fzf-cmd)
+  ^open $"/Applications/($name)"
 }
 
 export def git-rebase-interactive [arg] {
@@ -64,7 +70,7 @@ export def help-find [pattern: string] {
 
 export def "html table" [--body-only (-b)] {
   if $body_only {
-    print '<table>
+    '<table>
     <tbody>
         <tr>
             <td></td>
@@ -72,7 +78,7 @@ export def "html table" [--body-only (-b)] {
     </tbody>
   </table>'
   } else {
-    print '<table>
+    '<table>
     <thead>
         <tr>
             <th></th>
