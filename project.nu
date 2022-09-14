@@ -13,20 +13,24 @@ export def vscode [path?: string] {
 }
 
 # Select a project dir to cd to.
-export def-env project-cd [] {
+export def-env 'project cd' [] {
   let dir = (fzf-project-dir)
   # The cd call must not be in a block in order to maintain def-env semantics.
-  cd (if ($dir | is-empty) { "." } else { $dir })
+  cd (if ($dir | is-empty) { '.' } else { $dir })
 }
 
 # Open all projects in VSCode (so that VSCode will thereafter open files in the correct workspace)
-export def project-vscode-open-all [] {
+export def 'project open-all' [] {
   project-dirs | each { |dir| ^code $dir } | save /dev/null # vscode warns (on stdout) that it is being passed stdin
 }
 
 # Register a new project file
-def "project-path add" [path: string] {
-  $"($path)\n" | save --append (project-paths-file)
+export def 'project add' [path: string] {
+  $'($path)\n' | save --append (project-paths-file)
+}
+
+export def 'project edit-project-paths' [] {
+  ^code (project-paths-file)
 }
 
 def fzf-project-path [] {
@@ -37,7 +41,7 @@ def fzf-project-dir [] {
   project-dirs | fzf-cmd | str trim -r
 }
 
-def project-paths-file [] { "~/.project-paths.txt" | path expand }
+def project-paths-file [] { '~/.project-paths.txt' | path expand }
 
 def project-paths [] {
   open (project-paths-file)
@@ -57,11 +61,11 @@ def project-dirs [] {
 }
 
 def containing-repo [dir: string, stack: int = 0] { # string | null
-    if ($dir | path join ".git" | path exists) {
+    if ($dir | path join '.git' | path exists) {
       $dir
     } else if ($dir != '/' && $dir != '') {
       if $stack > 20 {
-        print $"Error: infinite recursion for $($dir)"
+        print $'Error: infinite recursion for $($dir)'
         null
       } else {
         containing-repo ($dir | path dirname) ($stack + 1)

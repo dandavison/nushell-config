@@ -62,6 +62,31 @@ export def help-find [pattern: string] {
   help --find $pattern
 }
 
+export def "html table" [--body-only (-b)] {
+  if $body_only {
+    print '<table>
+    <tbody>
+        <tr>
+            <td></td>
+        </tr>
+    </tbody>
+  </table>'
+  } else {
+    print '<table>
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+        </tr>
+    </tbody>
+  </table>'
+  }
+}
+
 export def kill-all [name: string] {
   ps | where name == $name | get pid | each { |it| kill -9 $it }
 }
