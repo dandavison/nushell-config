@@ -29,6 +29,13 @@ export def 'project add' [path: string] {
   $'($path)\n' | save --append (project-paths-file)
 }
 
+export def 'project open' [] {
+  let dir = (fzf-project-dir)
+  if (not ($dir | is-empty)) {
+    vscode $dir
+  }
+}
+
 export def 'project edit-project-paths' [] {
   ^code (project-paths-file)
 }
