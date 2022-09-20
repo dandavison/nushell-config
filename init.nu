@@ -8,7 +8,7 @@ let-env config = ($env.config | merge {
       {
         name: pm_switch
         modifier: control
-        keycode: char_p
+        keycode: space
         mode: [emacs, vi_normal, vi_insert]
         event: [
           {
