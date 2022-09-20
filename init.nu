@@ -21,11 +21,11 @@ let-env config = ($env.config | merge {
   }
 })
 
-source alias.nu
+source env-dan.nu
 use lib.nu *
 use ~/src/pm/pm.nu *
 use git.nu *
 use git-stash.nu *
 source prompt.nu
-source env-dan.nu
 source init-local.nu
+source alias.nu

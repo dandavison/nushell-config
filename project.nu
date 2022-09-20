@@ -1,17 +1,3 @@
-# Open a file or directory in VSCode.
-# With no input, select a project file.
-export def vscode [path?: string] {
-  let path = (if $path == null {
-      (fzf-project-path)
-    } else {
-      $path
-    }
-  )
-  if (not ($path | is-empty)) {
-    ^code $path
-  }
-}
-
 # Select a project dir to cd to.
 export def-env 'project cd' [] {
   let dir = (fzf-project-dir)
