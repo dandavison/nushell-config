@@ -139,6 +139,12 @@ export def rg-delta [
   }
 }
 
+def tee [] {
+    let out = $in
+    print $out
+    $out
+}
+
 export def time-now [] {
   let time = (date format '%s %f' | split column ' ' sec ns | first)
   (($time | get sec | into int) * 1sec) + (($time | get ns | into int) * 1ns)
