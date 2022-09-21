@@ -11,13 +11,25 @@ export def 'git-diff origin-main' [] {
 } 
 
 export def 'git-branch origin-main' [] {
+    git-branch-main-or-master -r 'origin/main' 'origin/master'
+}
+
+export def 'git-branch main' [] {
+    git-branch-main-or-master 'main' 'master'
+}
+
+def git-branch-main-or-master [name1: string, name2: string, --remote (-r)] {
+    let branches = if $remote {
+        git branch -r --format %(refname:short)  
+    } else {
+        git branch --format %(refname:short)  
+    }
     let candidates = (
-      git branch -r --format "%(refname:short)"
-        | lines
-        | find 'origin/main' 'origin/master'
+      $branches | lines
+                | find -r $"^\(($name1)|($name2)\)$"
     )
     if ($candidates | is-empty) {
-        print "Error: neither origin/main nor origin/master exist"
+        print $'Error: neither ($name1) nor ($name2) exist'
     } else if ($candidates | length) != 1 {
         print $"Error: multiple candidates for main branch: ($candidates)"
     } else {

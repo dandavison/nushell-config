@@ -19,6 +19,7 @@ alias git-untracked-files = git ls-files --others --exclude-standard
 alias git-user-public = (git config user.name "Dan Davison"; git config user.email "dandavison7@gmail.com")
 alias gpd = async-git-prompt-delete-cache
 alias glob = git log $"origin/(git rev-parse --abbrev-ref HEAD | str trim -r)"
+alias glom = git log (git-branch origin-main)
 alias gpob = git pull origin (git rev-parse --abbrev-ref HEAD | str trim -r)
 alias gr = git-reset
 alias grim = git rebase --interactive (git-branch main)
