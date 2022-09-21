@@ -19,8 +19,14 @@ export def 'git-stash save' [stash?: string] {
     open $stash | ^git apply -R
 }
 
-export def 'git-stash apply' [stash: string] {
-    open (stash-file $stash) | ^git apply
+export def 'git-stash apply' [] {
+    ls ~/tmp/git-stash | sort-by -r modified
+                       | get name
+                       | to text
+                       | fzf --delimiter / --with-nth 6 --info hidden
+                       | str trim -r
+                       | tee
+                       | and-then { ^git apply $in }
 }
 
 export def 'git-stash list' [] {
