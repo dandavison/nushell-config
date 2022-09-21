@@ -6,6 +6,16 @@ let-env config = ($env.config | merge {
     show_banner: false
     keybindings: [
       {
+        name: reload_config
+        modifier: control
+        keycode: char_r
+        mode: [emacs, vi_normal, vi_insert]
+        event: {
+          send: executehostcommand,
+          cmd: $"source '($nu.env-path)'; source '($nu.config-path)'"
+        }
+      }
+      {
         name: pm_switch
         modifier: control
         keycode: space
