@@ -21,6 +21,7 @@ let-env config = ($env.config | merge {
   }
 })
 
+use stdlib.nu *
 use lib.nu *
 use ~/src/pm/pm.nu *
 use git.nu *

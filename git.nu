@@ -37,6 +37,11 @@ def git-branch-main-or-master [name1: string, name2: string, --remote (-r)] {
     }
 }
 
+export def git-checkout [n: int = 8] {
+    $in | or-else { (^git branch-by-date | take $n | fzf-cmd | split words | first) }
+        | and-then { git checkout $in }
+}
+
 export def 'git-checkout origin-main' [] {
     let main = (git-branch origin-main)
     print $"git checkout ($main)"
