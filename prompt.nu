@@ -15,11 +15,24 @@ def prompt-overlays [] {
     overlay list | skip 1 | str join ' '
 }
 
+def prompt-cwd [] {
+    let project = (pm current)
+    if (not ($project | is-empty)) {
+        let project_dir = ($project.dir | path expand)
+        $env.PWD | str replace $'^($project_dir)/?' ''
+                 | str replace $env.HOME '~'
+                 | do {
+                    let path = $in
+                    if ($path | is-empty) {$path} else  { $'($path | str trim -c "/")/'}
+                 }
+    }
+}
+
 def prompt-create-left-prompt [] {
     let pwd = ($env.PWD | str replace $env.HOME '~' | path basename)
     prompt-concat [
         {text: (prompt-overlays), color: (ansi green_bold)}
-        # {text: $pwd, color: (ansi green_bold)}
+        {text: (prompt-cwd), color: (ansi light_gray_bold)}
         {text: (prompt-git-branch), color: (ansi blue_bold)}
         {text: (async-git-prompt-string), color: (ansi green_bold)}
     ]
