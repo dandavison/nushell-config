@@ -129,14 +129,15 @@ export def rg-delta [
 ] {
   # TODO: nicer way
   if ($fixed_strings || $ignore_case) {
-    let fixed_strings = if $fixed_strings { "-F" } else { "" }
-    let ignore_case = if $ignore_case { "-i" } else { "" }
-    let rg_args = ([$fixed_strings $ignore_case] | str join " " | str trim)
-    # echo $"rg ($rg_args) --json ($pattern) ($path) | delta"
+    let rg_args = ([[$fixed_strings "-F" ] [$ignore_case "-i" ]] | collect-args)
     rg $rg_args --json $pattern $path | delta  
   } else {
     rg --json $pattern $path | delta
   }
+}
+
+def collect-args [] { # List[Tuple2] -> String
+  $in | where -b {|flag__arg| $flag__arg.0} | each {|it| $it.1} | str join ' ' 
 }
 
 def tee [] {
