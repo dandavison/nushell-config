@@ -22,7 +22,7 @@ export def do-async [block: block] {
   bash -c $"nu -c 'do (view-source $block)' &"
 }
 
-export def fzf-cmd [--help (-h)] {
+export def fzf-cmd [] {
   str join "\n" | ^fzf --info=hidden | str trim -r
 }
 
