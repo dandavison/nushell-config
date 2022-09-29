@@ -23,12 +23,11 @@ export def do-async [block: block] {
 }
 
 export def fzf-cmd [] {
-  str join "\n" | ^fzf --info=hidden | str trim -r
+  str join "\n" | ^fzf --cycle --info hidden --ansi --color light --exact --prompt='  ' | str trim -r
 }
 
 export def app [] {
-  let name = (ls /Applications/*.app | get name | path basename | fzf-cmd)
-  ^open $"/Applications/($name)"
+  ^open (fd -d 1 '.+\.app' /Applications /System/Applications /System/Applications/Utilities | fzf-cmd)
 }
 
 export def git-rebase-interactive [arg] {
