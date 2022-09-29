@@ -25,11 +25,12 @@ def prompt-cwd [] {
                     let path = $in
                     if ($path | is-empty) {$path} else  { $'($path | str trim -c "/")/'}
                  }
+    } else {
+        $env.PWD | str replace $env.HOME '~'
     }
 }
 
 def prompt-create-left-prompt [] {
-    let pwd = ($env.PWD | str replace $env.HOME '~' | path basename)
     prompt-concat [
         {text: (prompt-overlays), color: (ansi green_bold)}
         {text: (prompt-cwd), color: (ansi light_gray_bold)}
