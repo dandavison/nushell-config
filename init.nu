@@ -1,7 +1,7 @@
 let-env config = ($env.config | merge {
   {
     color_config: $light_theme
-    disable_table_indexes: true
+    table_index_mode: never
     cd_with_abbreviations: true
     show_banner: false
     quick_completions: false
