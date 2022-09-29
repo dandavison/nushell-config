@@ -1,4 +1,4 @@
-source ~/src/devenv/dotfiles/nu/alias-generated.nu
+source ~/src/devenv/nushell/alias-generated.nu
 
 alias \ = exec nu
 alias bat = ^bat --theme GitHub --style header,grid

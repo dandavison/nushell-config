@@ -61,4 +61,4 @@ let-env NU_PLUGIN_DIRS = [
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
-source-env ~/src/devenv/nu/env-dan.nu
+source-env ~/src/devenv/nushell/env-dan.nu

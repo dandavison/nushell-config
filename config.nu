@@ -511,4 +511,4 @@ let-env config = {
   ]
 }
 
-source '~/src/devenv/dotfiles/nu/init.nu'
+source '~/src/devenv/nushell/init.nu'
