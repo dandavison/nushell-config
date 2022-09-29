@@ -2,7 +2,7 @@ use async-git-prompt.nu *
 
 def prompt-concat [parts: table] {
     $parts
-    | where (not ($it.text | is-empty))
+    | where not ($it.text | is-empty)
     | each { |it| $"($it.color)($it.text)(ansi reset)" }
     | str join ' '
 }
@@ -23,7 +23,7 @@ def prompt-cwd [] {
                  | str replace $env.HOME '~'
                  | do {
                     let path = $in
-                    if ($path | is-empty) {$path} else  { $'($path | str trim -c "/")/'}
+                    if ($path | is-empty) { $path } else  { $'($path | str trim -c "/")/'}
                  }
     } else {
         $env.PWD | str replace $env.HOME '~'
