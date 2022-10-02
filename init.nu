@@ -4,7 +4,7 @@ let-env config = ($env.config | merge {
     table_index_mode: never
     cd_with_abbreviations: true
     show_banner: false
-    quick_completions: false
+    quick_completions: true
     keybindings: [
       {
         name: reload_config
