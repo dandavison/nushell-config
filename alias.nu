@@ -7,15 +7,16 @@ alias cd = pm cd
 alias en = exec nu
 alias gbl = git blame
 alias gc = git checkout
+alias gcc = git-checkout
 alias gcb = git checkout -b
 alias gcm = (git-branch main | and-then { git-checkout $in })
 alias gcom = (git-branch origin-main | and-then { git-checkout $in })
 alias gd = git-diff
-alias gdc = git diff --cached $env.GIT_PATHS
+alias gdc = git-diff --cached
 alias gdcs = gdsc
 alias gdom = git diff $"(git-branch origin-main)..."
-alias gds = git diff --stat=200,200 $env.GIT_PATHS
-alias gdsc = git diff --cached --stat=200,200 $env.GIT_PATHS
+alias gds = git-diff --stat
+alias gdsc = git-diff --cached --stat
 alias gfom = git fetch origin (git-branch main)
 alias git-untracked-files = git ls-files --others --exclude-standard
 alias git-user-public = (git config user.name "Dan Davison"; git config user.email "dandavison7@gmail.com")

@@ -1,9 +1,15 @@
-export def git-diff [revision?: string, --stat] {
-    if not ($revision | is-empty) {
-        git diff $revision -- $env.GIT_PATHS
-    } else {
-        git diff -- $env.GIT_PATHS
+export def git-diff [revision?: string, --cached, --stat] {
+    if ($cached && (not ($revision | is-empty))) {
+        error make {msg: "--cached may not be used with a revision"}
     }
+    let args = (
+        [
+            (if $cached { '--cached' } else { null })
+            (if $stat { '--stat=200,200' } else { null })
+            (if not ($revision | is-empty) { $revision } else { null })
+        ] | where -b { not ($in | is-empty) }
+    )
+    git diff $args -- $env.GIT_PATHS
 }
 
 export def 'git-diff origin-main' [] {
