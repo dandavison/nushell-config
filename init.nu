@@ -28,6 +28,18 @@ let-env config = ($env.config | merge {
           }
         ]
       }
+      {
+        name: run_app
+        modifier: control
+        keycode: char_p
+        mode: [emacs, vi_normal, vi_insert]
+        event: [
+          {
+            send: executehostcommand,
+            cmd: "app"
+          }
+        ]
+      }
     ]
   }
 })

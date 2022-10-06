@@ -9,10 +9,6 @@ export def bsp-project [] {
   }
 }
 
-export def chrome [path: string] {
-  ^open -a `/Applications/Google Chrome.app/` $path
-}
-
 export def exec-async [commands: string] {
     bash -c $"nu -c '($commands)' &"
 }
