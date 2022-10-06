@@ -1,4 +1,4 @@
-export def git-diff [revision?: string, --cached, --stat] {
+export def git-diff [revision?: string, $revision2?: string, --cached, --stat] {
     if ($cached && (not ($revision | is-empty))) {
         error make {msg: "--cached may not be used with a revision"}
     }
@@ -7,6 +7,7 @@ export def git-diff [revision?: string, --cached, --stat] {
             (if $cached { '--cached' } else { null })
             (if $stat { '--stat=200,200' } else { null })
             (if not ($revision | is-empty) { $revision } else { null })
+            (if not ($revision2 | is-empty) { $revision2 } else { null })
         ] | where -b { not ($in | is-empty) }
     )
     git diff $args -- $env.GIT_PATHS

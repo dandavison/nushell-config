@@ -123,20 +123,21 @@ export def pid [] {
 export def rg-delta [
   pattern: string,
   path: string = ".",
+  --before-context (-A): int,
+  --after-context (-B): int,
+  --context (-C): int,
   --fixed-strings (-F),
   --ignore-case (-i),
 ] {
-  # TODO: nicer way
-  if ($fixed_strings || $ignore_case) {
-    let rg_args = ([[$fixed_strings "-F" ] [$ignore_case "-i" ]] | collect-args)
-    rg $rg_args --json $pattern $path | delta  
-  } else {
-    rg --json $pattern $path | delta
-  }
-}
-
-def collect-args [] { # List[Tuple2] -> String
-  $in | where -b {|flag__arg| $flag__arg.0} | each {|it| $it.1} | str join ' ' 
+  let rg_args = ([
+    (if not ($before_context | is-empty) { ['-B' $before_context] } else { null })
+    (if not ($after_context | is-empty) { ['-A' $after_context] } else { null })
+    (if not ($context | is-empty) { ['-C' $context] } else { null })
+    (if $fixed_strings { '-F' } else { null })
+    (if $ignore_case { '-i' } else { null })
+  ] | flatten | where -b { not ($in | is-empty) })
+  print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
+  rg $rg_args --json $pattern $path | delta
 }
 
 def tee [] {
