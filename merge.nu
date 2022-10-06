@@ -51,5 +51,5 @@ def is-record [] {
 }
 
 export def 'record keys' [] {
-    $in | transpose k v | get k
+    $in | transpose k v | get -i k
 }
