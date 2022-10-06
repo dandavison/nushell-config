@@ -22,6 +22,11 @@ export def do-async [block: block] {
   bash -c $"nu -c 'do (view-source $block)' &"
 }
 
+export def 'duti set-application' [extension: string] {
+  ($extension | str starts-with '.') || (error make {msg: $'Extension must start with \'.\': ($extension)'})
+  ^duti -s com.microsoft.VSCodeInsiders $extension all
+}
+
 export def fzf-cmd [] {
   str join "\n" | ^fzf --cycle --info hidden --ansi --color light --exact --prompt='  ' | str trim -r
 }
