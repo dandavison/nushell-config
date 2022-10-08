@@ -4,6 +4,7 @@ alias \ = exec nu
 alias bat = ^bat --theme GitHub --style header,grid
 alias cdd = pm cd
 alias cd = pm cd
+alias code = code with-workspace
 alias en = exec nu
 alias gbl = git blame
 alias gc = git checkout

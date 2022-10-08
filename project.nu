@@ -54,6 +54,7 @@ def project-dirs [] {
 }
 
 def containing-repo [dir: string, stack: int = 0] { # string | null
+    # This is probably better done with git -C $dir rev-parse --show-toplevel
     if ($dir | path join '.git' | path exists) {
       $dir
     } else if ($dir != '/' && $dir != '') {
