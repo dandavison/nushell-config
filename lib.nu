@@ -31,6 +31,10 @@ export def app [] {
   ^open (fd -d 1 '.+\.app' /Applications /System/Applications /System/Applications/Utilities | fzf-cmd)
 }
 
+export def lit [] {
+  ^open (fd -d 1 '.+\.pdf' `~/GoogleDrive/Literature/Computer Science/` | ^fzf --cycle --info hidden --ansi --color light --exact --prompt='  ' -d / --with-nth 7 | str trim -r)
+}
+
 export def git-rebase-interactive [arg] {
   let commit = if ($arg | describe) == int {
     $"HEAD~($arg)"
