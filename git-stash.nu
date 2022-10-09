@@ -23,7 +23,7 @@ export def 'git-stash apply' [] {
     ls ~/tmp/git-stash | sort-by -r modified
                        | get name
                        | to text
-                       | fzf --delimiter / --with-nth 6 --info hidden
+                       | fzf '--delimiter' / '--with-nth' 6
                        | str trim -r
                        | tee
                        | and-then { ^git apply $in }
