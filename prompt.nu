@@ -41,4 +41,7 @@ def prompt-create-left-prompt [] {
 
 let-env PROMPT_COMMAND = { prompt-create-left-prompt }
 let-env PROMPT_COMMAND_RIGHT = { $nothing }
-let-env PROMPT_INDICATOR = { $" (ansi green_bold)〉" }
+let-env PROMPT_INDICATOR = {
+    let color = if ($env.LAST_EXIT_CODE == 0) { ansi green_bold } else { ansi red_bold }
+    $" ($color)〉"
+}
