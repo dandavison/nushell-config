@@ -23,21 +23,10 @@ export def 'duti set-application' [extension: string] {
   ^duti -s com.microsoft.VSCodeInsiders $extension all
 }
 
-export def open-thing [] {
-
-}
-
 export def fzf [...args] {
-  ^fzf --cycle --info hidden --ansi --color light --exact --prompt='  ' $args | str trim -r
+  ^fzf --cycle --info hidden --ansi --color light --exact --prompt='  ' --bind right:accept,left:abort $args | str trim -r
 }
 
-export def app [] {
-  ^open (fd -d 1 '.+\.app' /Applications /System/Applications /System/Applications/Utilities | fzf)
-}
-
-export def lit [] {
-  ^open (fd -d 1 '.+\.pdf' `~/GoogleDrive/Literature/Computer Science/` | fzf '-d' / '--with-nth' 7 | str trim -r)
-}
 
 export def git-rebase-interactive [arg] {
   let commit = if ($arg | describe) == int {

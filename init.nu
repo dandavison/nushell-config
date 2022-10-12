@@ -29,14 +29,14 @@ let-env config = ($env.config | merge {
         ]
       }
       {
-        name: run_app
-        modifier: control
-        keycode: char_p
+        name: M-x
+        modifier: alt
+        keycode: char_x
         mode: [emacs, vi_normal, vi_insert]
         event: [
           {
             send: executehostcommand,
-            cmd: "app"
+            cmd: "M-x"
           }
         ]
       }
@@ -46,6 +46,7 @@ let-env config = ($env.config | merge {
 
 use stdlib.nu *
 use lib.nu *
+use M-x.nu *
 use ~/src/pm/pm.nu *
 use git.nu *
 use git-stash.nu *
