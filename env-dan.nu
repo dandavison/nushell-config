@@ -3,7 +3,7 @@ let-env NU_LIB_DIRS = [
   ($nu.config-path | path dirname | path expand | path join "lib")
 ]
 let-env PATH = (
-  '/opt/twitter_mde/bin:/opt/twitter_mde/homebrew_minimal/mde_bin:/Users/ddavison/.nvm/versions/node/v14.9.0/bin:/Users/ddavison/.pyenv/shims:/Users/ddavison/bin:/Users/ddavison/.local/bin:/Users/ddavison/src/emacs-config/bin:/Users/ddavison/.cargo/bin:/opt/homebrew/opt/postgresql/bin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/sbin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/twitter_mde/data/node/bin:/Users/ddavison/.npm-global/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/Sublime Text.app/Contents/SharedSupport/bin:/opt/twitter_mde/data/gcloud/current/mde_bin'
+  '/opt/twitter_mde/bin:/opt/twitter_mde/homebrew_minimal/mde_bin:/Users/ddavison/.nvm/versions/node/v14.9.0/bin:/Users/ddavison/.pyenv/shims:/Users/ddavison/bin:/Users/ddavison/.local/bin:/Users/ddavison/src/emacs-config/bin:/Users/ddavison/.cargo/bin:/opt/homebrew/opt/postgresql/bin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/sbin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/twitter_mde/data/node/bin:/Users/ddavison/.npm-global/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/Sublime Text.app/Contents/SharedSupport/bin:/opt/twitter_mde/data/gcloud/current/mde_bin:~/tmp/3p/fzf_browser'
   | split row ':'
 )
 let-env ALTERNATE_EDITOR = 'emacs -nw -q'
