@@ -32,16 +32,17 @@ def prompt-cwd [] {
 
 def prompt-create-left-prompt [] {
     prompt-concat [
-        {text: (prompt-overlays), color: (ansi green_bold)}
+        {text: (prompt-overlays), color: (ansi green_bold | or-error-style)}
         {text: (prompt-cwd), color: (ansi light_gray_bold)}
         {text: (prompt-git-branch), color: (ansi blue_bold)}
         {text: (async-git-prompt-string), color: (ansi green_bold)}
     ]
 }
 
+def or-error-style [] {
+    if ($env.LAST_EXIT_CODE == 0) { $in } else { ansi red_bold }
+}
+
 let-env PROMPT_COMMAND = { prompt-create-left-prompt }
 let-env PROMPT_COMMAND_RIGHT = { $nothing }
-let-env PROMPT_INDICATOR = {
-    let color = if ($env.LAST_EXIT_CODE == 0) { ansi green_bold } else { ansi red_bold }
-    $" ($color)〉"
-}
+let-env PROMPT_INDICATOR = { $" (ansi green_bold | or-error-style)〉" }
