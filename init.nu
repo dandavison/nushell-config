@@ -40,6 +40,18 @@ let-env config = ($env.config | merge {
           }
         ]
       }
+      {
+        name: browse
+        modifier: alt
+        keycode: char_.
+        mode: [emacs, vi_normal, vi_insert]
+        event: [
+          {
+            send: executehostcommand,
+            cmd: "browse"
+          }
+        ]
+      }
     ]
   }
 })

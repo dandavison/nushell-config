@@ -13,6 +13,24 @@ export def-env br [] {
   cd $dir
 }
 
+export def browse [dir: string = ".", depth: int = 0] {
+  ls $dir | get name
+          | sort -i
+          | to text
+          | fzf '--tac'
+          | if not ($in | is-empty) {
+            if (($in | path type) == 'dir') {
+              browse $in ($depth + 1)
+            } else {
+              code-with-workspace $in
+            }
+          } else do {
+            if ($depth > 0) {
+              browse $'($dir)/..' ($depth - 1)
+            }
+        }
+}
+
 export def bsp-project [] {
   if ((".bloop" | path type) == "symlink") {
     ".bloop"
@@ -107,6 +125,10 @@ export def "html table" [--body-only (-b)] {
 
 export def kill-all [name: string] {
   ps | where name == $name | get pid | each { |it| kill -9 $it }
+}
+
+def log [msg: string] {
+  $msg | str replace '$' "\n" | save -a '/tmp/log.txt'
 }
 
 export def nu-binary [which?: string] {
