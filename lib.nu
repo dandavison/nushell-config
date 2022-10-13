@@ -1,15 +1,16 @@
 export def-env br [] {
-  let cmd_file = ([$env.TMPDIR (random uuid)] | path join)
   mkdir $env.TMPDIR
+  let cmd_file = ([$env.TMPDIR (random uuid)] | path join)
   touch $cmd_file
   broot --outcmd $cmd_file
-  let cmd = ((open $cmd_file) | str trim)
+  let cmd = (open $cmd_file | str trim)
   rm $cmd_file | ignore
-  cd (if  (not ($cmd | is-empty)) && ($cmd | str starts-with "cd") {
-    ($cmd | str replace "cd" "" | str trim | str substring "1,-1")
+  let dir = if (not ($cmd | is-empty)) && ($cmd | str starts-with "cd") {
+    $cmd | str replace "^cd" "" | str trim | str substring "1,-1"
   } else {
     $env.PWD
-  })
+  }
+  cd $dir
 }
 
 export def bsp-project [] {
