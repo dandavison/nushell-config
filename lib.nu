@@ -1,3 +1,17 @@
+export def-env br [] {
+  let cmd_file = ([$env.TMPDIR (random uuid)] | path join)
+  mkdir $env.TMPDIR
+  touch $cmd_file
+  broot --outcmd $cmd_file
+  let cmd = ((open $cmd_file) | str trim)
+  rm $cmd_file | ignore
+  cd (if  (not ($cmd | is-empty)) && ($cmd | str starts-with "cd") {
+    ($cmd | str replace "cd" "" | str trim | str substring "1,-1")
+  } else {
+    $env.PWD
+  })
+}
+
 export def bsp-project [] {
   if ((".bloop" | path type) == "symlink") {
     ".bloop"
