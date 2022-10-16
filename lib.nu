@@ -13,22 +13,26 @@ export def-env br [] {
   cd $dir
 }
 
-export def browse [dir: string = ".", depth: int = 0] {
+export def browse [dir: string = "."] {
   ls $dir | get name
           | sort -i
           | to text
           | fzf '--tac'
-          | if not ($in | is-empty) {
-            if (($in | path type) == 'dir') {
-              browse $in ($depth + 1)
+          | do {
+            let i = $in
+            log $'LAST_EXIT_CODE: ($env.LAST_EXIT_CODE)'
+            $i
+          } | if $env.LAST_EXIT_CODE != 130 {
+            if ($in | is-empty) {
+                browse $'($dir)/..'
             } else {
-              code-with-workspace $in
+              if (($in | path type) == 'dir') {
+                browse $in
+              } else {
+                code-with-workspace $in
+              }
             }
-          } else do {
-            if ($depth > 0) {
-              browse $'($dir)/..' ($depth - 1)
-            }
-        }
+          }
 }
 
 export def bsp-project [] {
