@@ -8,7 +8,7 @@ let-env config = ($env.config | merge {
     keybindings: [
       {
         name: reload_config
-        modifier: control
+        modifier: alt
         keycode: char_r
         mode: [emacs, vi_normal, vi_insert]
         event: {
