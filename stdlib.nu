@@ -23,8 +23,8 @@ export def unwrap-only [] {
   if $n == 1 {
     $head | first
   } else if $n == 0 {
-    error make {msg: $'get-only: input is empty'}
+    error make {msg: $'unwrap-only: input is empty'}
   } else {
-    error make {msg: $'get-only: input has length > 1'}
+    error make {msg: $'unwrap-only: input has length > 1'}
   }
 }
