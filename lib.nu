@@ -199,6 +199,7 @@ export def rg-delta [
   --after-context (-B): int,
   --context (-C): int,
   --fixed-strings (-F),
+  --glob (-g): string,
   --ignore-case (-i),
 ] {
   let rg_args = ([
@@ -206,6 +207,7 @@ export def rg-delta [
     (if not ($after_context | is-empty) { ['-A' $after_context] } else { null })
     (if not ($context | is-empty) { ['-C' $context] } else { null })
     (if $fixed_strings { '-F' } else { null })
+    (if not ($glob | is-empty) { ['-g' $glob] } else { null })
     (if $ignore_case { '-i' } else { null })
   ] | flatten | where -b { not ($in | is-empty) })
   print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
