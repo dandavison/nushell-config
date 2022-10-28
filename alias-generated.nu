@@ -47,7 +47,6 @@ alias gp  = git pull
 alias gpo  = git pull origin
 alias gpom   = (git fetch origin master ; git branch -d master ; git branch master origin/master)
 alias grb  = git rebase
-alias grba  = grb --abort
 alias grbc  = grb --continue
 alias grbi  = grb --interactive
 alias gre  = git remote
