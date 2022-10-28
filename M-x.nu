@@ -3,7 +3,7 @@ use lib.nu fzf
 use ~/src/pm/pm.nu 'pm switch'
 
 export def COMMANDS [] {
-  ['app' 'book' 'project']
+  ['app' 'book' 'project' 'vscode' 'vscode-project']
 }
 
 export def open-app [] {
@@ -30,5 +30,9 @@ export def M-x [] {
     open-book
   } else if $cmd == 'project' {
     pm switch
+  } else if $cmd == 'vscode' {
+    vscode .
+  } else if $cmd == 'vscode-project' {
+    vscode
   }
 }
