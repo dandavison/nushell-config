@@ -158,6 +158,7 @@ export def 'java-cmd abbreviate-classpath' [] {
 
 export def join-table [table: table, left_on: string, right_on: string] {
   into df | join ($table | into df) $left_on $right_on | into nu
+  # $in
 }
 
 export def kill-all [name: string] {
@@ -210,7 +211,7 @@ export def rg-delta [
     (if not ($glob | is-empty) { ['-g' $glob] } else { null })
     (if $ignore_case { '-i' } else { null })
   ] | flatten | where -b { not ($in | is-empty) })
-  print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
+  # print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
   rg $rg_args --json $pattern $path | delta
 }
 

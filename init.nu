@@ -58,6 +58,8 @@ let-env config = ($env.config | merge {
   }
 })
 
+ulimit -Sn 65535
+
 use stdlib.nu *
 use lib.nu *
 use M-x.nu *
@@ -67,3 +69,4 @@ use git-stash.nu *
 source prompt.nu
 source init-local.nu
 source alias.nu
+use ~/workspace/dan/utils/strato.nu *

@@ -412,11 +412,11 @@ let-env config = {
       name: completion_menu
       modifier: none
       keycode: tab
-      mode: emacs # Options: emacs vi_normal vi_insert
+      mode: [emacs, vi_normal, vi_insert]
       event: {
         until: [
           { send: menu name: completion_menu }
-          { send: menunext }
+          { edit: complete }
         ]
       }
     }
@@ -444,7 +444,7 @@ let-env config = {
     {
       name: undo_or_previous_page
       modifier: control
-      keycode: char_z
+      keycode: char_u
       mode: emacs
       event: {
         until: [

@@ -1,4 +1,5 @@
 alias b = (git branch-by-date | ^head)
+alias bash = SHELL=bash bash
 alias bat = ^bat --theme GitHub --style header,grid
 alias cat  = bat --style header,grid
 alias cd = pm cd
