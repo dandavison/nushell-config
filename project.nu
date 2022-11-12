@@ -49,7 +49,7 @@ def project-dirs [] {
   | each { if (($in | path type) == 'dir') { $in } else { $in | path dirname }}
   | each { containing-repo $in }
   | uniq
-  | where -b { (not ($in | is-empty)) }
+  | where { (not ($in | is-empty)) }
   | sort
 }
 

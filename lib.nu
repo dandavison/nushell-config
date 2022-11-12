@@ -210,7 +210,7 @@ export def rg-delta [
     (if $fixed_strings { '-F' } else { null })
     (if not ($glob | is-empty) { ['-g' $glob] } else { null })
     (if $ignore_case { '-i' } else { null })
-  ] | flatten | where -b { not ($in | is-empty) })
+  ] | flatten | where { not ($in | is-empty) })
   # print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
   rg $rg_args --json $pattern $path | delta
 }
