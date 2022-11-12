@@ -215,6 +215,23 @@ export def rg-delta [
   rg $rg_args --json $pattern $path | delta
 }
 
+
+export def 'str hyperlink' [text: string] {
+  # fn format_osc8_hyperlink(url: &str, text: &str) -> String {
+  #     format!(
+  #         "{osc}8;;{url}{st}{text}{osc}8;;{st}",
+  #         url = url,
+  #         text = text,
+  #         osc = "\x1b]",
+  #         st = "\x1b\\"
+  #     )
+  # }
+  let url = $in
+  let osc8 = (ansi -o '8;;')
+  let st = (ansi st)
+  $"($osc8)($url)($st)($text)($osc8)($st)"
+}
+
 def tee [] {
     let out = $in
     print $out
