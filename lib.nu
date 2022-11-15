@@ -141,7 +141,7 @@ export def sockets [--abbreviate-java-class-paths (-j)] {
             | upsert 'pid' { |r| $r.pid | into int }
             | rename -c ['name' 'connection']
             | reject 'command'
-            | join-table (ps -l) 'pid' 'pid'
+            | join (ps -l) 'pid' 'pid'
             | if $abbreviate_java_class_paths {
                 upsert 'classpath' { |r| $r.command | java-cmd classpath }
                 | upsert 'command' { |r| $r.command | java-cmd abbreviate-classpath }
@@ -154,11 +154,6 @@ export def 'java-cmd classpath' [] {
 
 export def 'java-cmd abbreviate-classpath' [] {
   str replace '[^ ]*\.jar' '*.jar'
-}
-
-export def join-table [table: table, left_on: string, right_on: string] {
-  into df | join ($table | into df) $left_on $right_on | into nu
-  # $in
 }
 
 export def kill-all [name: string] {
