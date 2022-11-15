@@ -189,6 +189,16 @@ export def nu-binary [which?: string] {
   | select name type target
 }
 
+export def 'github checkout' [] { # input: e.g. 'raccmonteiro:command-url-parse'
+  let i = ($in | parse '{user}:{branch}' | get 0)
+  if (git remote | find $i.user | is-empty) {
+    let repo = ((git remote get-url origin | parse '{_1}@github.com:{_2}/{repo}').repo.0 | str trim -r)
+    git remote add $i.user $'git@github.com:($i.user)/($repo)'
+  }
+  git fetch $i.user
+  git checkout -B $'($i.user)-($i.branch)' $'($i.user)/($i.branch)'
+}
+
 export def pid [] {
   pstree | rg -B 5 $nu.pid
 }

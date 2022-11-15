@@ -36,6 +36,7 @@ alias gl = git log --stat
 alias glp  = git log --stat -p
 alias glob = git log $"origin/(git rev-parse --abbrev-ref HEAD | str trim -r)"
 alias glom = git log (git-branch origin-main)
+alias gp = git pull
 alias gpd = async-git-prompt-delete-cache
 alias grv  = git revert --no-edit
 alias gpob = git pull origin (git rev-parse --abbrev-ref HEAD | str trim -r)
