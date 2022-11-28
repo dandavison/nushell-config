@@ -207,17 +207,25 @@ export def rg-delta [
   --fixed-strings (-F),
   --glob (-g): string,
   --ignore-case (-i),
+  --files-with-matches (-l),
 ] {
-  let rg_args = ([
-    (if not ($before_context | is-empty) { ['-B' $before_context] } else { null })
-    (if not ($after_context | is-empty) { ['-A' $after_context] } else { null })
-    (if not ($context | is-empty) { ['-C' $context] } else { null })
-    (if $fixed_strings { '-F' } else { null })
-    (if not ($glob | is-empty) { ['-g' $glob] } else { null })
-    (if $ignore_case { '-i' } else { null })
-  ] | flatten | where { not ($in | is-empty) })
-  # print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
-  rg $rg_args --json $pattern $path | delta
+  if $files_with_matches {
+    rg -l $pattern $path | lines
+                         | each {|p| $'file-line-column://($env.PWD)/($p)'
+                         | str hyperlink $p}
+                         | to text
+  } else {
+    let rg_args = ([
+      (if not ($before_context | is-empty) { ['-B' $before_context] } else { null })
+      (if not ($after_context | is-empty) { ['-A' $after_context] } else { null })
+      (if not ($context | is-empty) { ['-C' $context] } else { null })
+      (if $fixed_strings { '-F' } else { null })
+      (if not ($glob | is-empty) { ['-g' $glob] } else { null })
+      (if $ignore_case { '-i' } else { null })
+    ] | flatten | where { not ($in | is-empty) })
+    # print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
+    rg $rg_args --json $pattern $path | delta
+  }
 }
 
 
