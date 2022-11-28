@@ -1,6 +1,6 @@
 use stdlib.nu and-then
 use lib.nu fzf
-use ~/src/pm/pm.nu 'pm switch'
+use ~/src/pm/pm.nu 'pm switch' edit code-with-workspace
 
 export def COMMANDS [] {
   ['app' 'book' 'project' 'vscode' 'vscode-project']
