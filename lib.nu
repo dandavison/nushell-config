@@ -46,6 +46,25 @@ export def bsp-project [] {
   }
 }
 
+
+export def count-lines [] {
+    par-each {|p| ^wc -l $p | parse -r '(?<n>\d+)'}
+        | get n
+        | into int
+        | math sum
+}
+
+export def count-lines-in-subdirectories [] {
+    fd $pattern . | lines
+                  | par-each {|p| ^wc -l $p | parse -r '(?<loc>\d+) ./(?<dir>[^/]+)'}
+                  | group-by dir
+                  | transpose dir data
+                  | par-each {|r| {dir: $r.dir loc: ($r.data.loc | into int | math sum)}}
+                  | sort-by loc
+}
+
+
+
 export def exec-async [commands: string] {
     bash -c $"nu -c '($commands)' &"
 }
