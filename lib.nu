@@ -5,7 +5,7 @@ export def-env br [] {
   broot --outcmd $cmd_file
   let cmd = (open $cmd_file | str trim)
   rm $cmd_file | ignore
-  let dir = if (not ($cmd | is-empty)) && ($cmd | str starts-with "cd") {
+  let dir = if (not ($cmd | is-empty)) and ($cmd | str starts-with "cd") {
     $cmd | str replace "^cd" "" | str trim | str substring "1,-1"
   } else {
     $env.PWD
@@ -54,7 +54,7 @@ export def count-lines [] {
         | math sum
 }
 
-export def count-lines-in-subdirectories [] {
+export def count-lines-in-subdirectories [pattern: string] {
     fd $pattern . | lines
                   | par-each {|p| ^wc -l $p | parse -r '(?<loc>\d+) ./(?<dir>[^/]+)'}
                   | group-by dir
@@ -75,7 +75,7 @@ export def do-async [block: block] {
 }
 
 export def 'duti set-application' [extension: string] {
-  ($extension | str starts-with '.') || (error make {msg: $'Extension must start with \'.\': ($extension)'})
+  ($extension | str starts-with '.') or (error make {msg: $'Extension must start with \'.\': ($extension)'})
   ^duti -s com.microsoft.VSCodeInsiders $extension all
 }
 
@@ -109,12 +109,22 @@ export def git-reset [arg, --hard] {
 export def git-status [] {
     def print-line [prefix: string] {
         lines
-        | take until $it =~ '\d+ files? changed'
+        | take until {|line| $line =~ '\d+ files? changed'}
         | each { |line| echo $"($prefix) ($line)" }
     }
     # અજ
     git -c delta.paging=never diff --stat --color=always strato/src strato/docs
     git -c delta.paging=never diff --stat --cached --color=always strato/src strato/docs
+}
+
+export def python-profile-viz [pstats_file_path: string] {
+  if ($pstats_file_path | is-empty) {
+    print "python -m cProfile -o out.prof foo.py"
+    print "python-profile-viz out.prof"
+  } else {
+    gprof2dot --colour-nodes-by-selftime -f pstats $pstats_file_path | dot -T svg -o /tmp/out.svg
+    ^open /tmp/out.svg  
+  }
 }
 
 export def help-find [pattern: string] {
@@ -160,11 +170,16 @@ export def sockets [--abbreviate-java-class-paths (-j)] {
             | upsert 'pid' { |r| $r.pid | into int }
             | rename -c ['name' 'connection']
             | reject 'command'
-            | join (ps -l) 'pid' 'pid'
+            | join-table (ps -l) 'pid' 'pid'
             | if $abbreviate_java_class_paths {
                 upsert 'classpath' { |r| $r.command | java-cmd classpath }
                 | upsert 'command' { |r| $r.command | java-cmd abbreviate-classpath }
               } else { $in }
+}
+
+export def join-table [table: table, left_on: string, right_on: string] {
+  # into df | join ($table | into df) --outer $left_on $right_on | into nu
+  $in
 }
 
 export def 'java-cmd classpath' [] {
@@ -219,7 +234,7 @@ export def pid [] {
 
 export def rg-delta [
   pattern: string,
-  path: string = ".",
+  path: string = "",
   --before-context (-A): int,
   --after-context (-B): int,
   --context (-C): int,
@@ -228,20 +243,29 @@ export def rg-delta [
   --ignore-case (-i),
   --files-with-matches (-l),
 ] {
-  if $files_with_matches {
-    rg -l $pattern $path | lines
-                         | each {|p| $'file-line-column://($env.PWD)/($p)'
-                         | str hyperlink $p}
-                         | to text
+  let path = if ($path | is-empty) {
+    if ('GIT_DEFAULT_PATH' in $env) {
+      $env.GIT_DEFAULT_PATH
+    } else {
+      '.'
+    }
   } else {
-    let rg_args = ([
-      (if not ($before_context | is-empty) { ['-B' $before_context] } else { null })
-      (if not ($after_context | is-empty) { ['-A' $after_context] } else { null })
-      (if not ($context | is-empty) { ['-C' $context] } else { null })
-      (if $fixed_strings { '-F' } else { null })
-      (if not ($glob | is-empty) { ['-g' $glob] } else { null })
-      (if $ignore_case { '-i' } else { null })
-    ] | flatten | where { not ($in | is-empty) })
+    $path
+  }
+  let rg_args = ([
+    (if not ($before_context | is-empty) { ['-B' $before_context] } else { null })
+    (if not ($after_context | is-empty) { ['-A' $after_context] } else { null })
+    (if not ($context | is-empty) { ['-C' $context] } else { null })
+    (if $fixed_strings { '-F' } else { null })
+    (if not ($glob | is-empty) { ['-g' $glob] } else { null })
+    (if $ignore_case { '-i' } else { null })
+  ] | flatten | where { not ($in | is-empty) })
+  if $files_with_matches {
+    rg -l $rg_args $pattern $path | lines
+                                  | each {|p| $'file-line-column://($env.PWD)/($p)'
+                                  | str hyperlink $p}
+                                  | to text
+  } else {
     # print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
     rg $rg_args --json $pattern $path | delta
   }

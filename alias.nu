@@ -1,4 +1,5 @@
-alias b = (git branch-by-date | ^head)
+alias b = (git branch-by-date | ^head -n 30)
+# git branch-by-date | parse -r '(?P<branch>[^ ]+) +(?P<when>.+)\n' | take 30
 alias bash = SHELL=bash bash
 alias bat = ^bat --theme GitHub --style header,grid
 alias cat  = bat --style header,grid
@@ -63,6 +64,7 @@ alias hc = help commands
 alias hf = help-find
 alias lss = (ls | get name | str collect $"  ")
 alias mk = mkdir
+alias mv = mv --force
 alias np  = ping -c 1 www.gov.uk
 alias p = pm
 alias r = async-git-prompt-refresh-cache

@@ -6,6 +6,10 @@ export def and-then [block: block] {
   }
 }
 
+export def eachline [block: block] {
+  lines | each { |line| $line | do $block }
+}
+
 # If input is empty, return result of evaluating block,
 # otherwise return input.
 export def or-else [block: block] {

@@ -15,7 +15,7 @@ def stash-file [stash?: string] {
 
 export def 'git-stash save' [stash?: string] {
     let stash = (stash-file $stash)
-    ^git diff HEAD -- $env.GIT_PATHS | save $stash
+    ^git diff HEAD -- $env.GIT_PATHS | save --force $stash
     open $stash | ^git apply -R
 }
 

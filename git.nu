@@ -1,5 +1,5 @@
 export def git-diff [revision?: string, $revision2?: string, --cached, --stat, --ignore-all-space (-w)] {
-    if ($cached && (not ($revision | is-empty))) {
+    if ($cached and (not ($revision | is-empty))) {
         error make {msg: "--cached may not be used with a revision"}
     }
     let args = (

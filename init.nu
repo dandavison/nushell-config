@@ -48,14 +48,12 @@ let-env keybindings = $env.config.keybindings ++ [
 ]
 
 let-env config = ($env.config | merge {
-  {
-    color_config: $light_theme
-    table_index_mode: never
-    cd_with_abbreviations: true
-    show_banner: false
-    quick_completions: true
-    keybindings: $env.keybindings
-  }
+  color_config: $light_theme
+  table_index_mode: never
+  cd_with_abbreviations: true
+  show_banner: false
+  quick_completions: true
+  keybindings: $env.keybindings
 })
 
 ulimit -Sn 65535
@@ -69,4 +67,3 @@ use git-stash.nu *
 source prompt.nu
 source init-local.nu
 source alias.nu
-use ~/workspace/dan/utils/strato.nu *
