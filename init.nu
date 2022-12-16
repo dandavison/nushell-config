@@ -47,13 +47,15 @@ let-env keybindings = $env.config.keybindings ++ [
   }
 ]
 
+let-env table = ($env.config.table | merge {
+  index_mode: "never"
+})
+
 let-env config = ($env.config | merge {
   color_config: $light_theme
-  table_index_mode: never
-  cd_with_abbreviations: true
   show_banner: false
-  quick_completions: true
   keybindings: $env.keybindings
+  table: $env.table
 })
 
 ulimit -Sn 65535
