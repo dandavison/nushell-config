@@ -1,6 +1,6 @@
 use async-git-prompt.nu *
 
-def prompt-concat [parts: table] {
+def prompt-concat [parts] {
     $parts
     | where not ($it.text | is-empty)
     | each { |it| $"($it.color)($it.text)(ansi reset)" }

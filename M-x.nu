@@ -1,6 +1,7 @@
 use stdlib.nu and-then
 use lib.nu fzf
-use ~/src/pm/pm.nu 'pm switch' edit code-with-workspace
+use ~/src/pm/pm.nu 'pm switch'
+# use ~/src/pm/pm.nu code-with-workspace
 
 export def COMMANDS [] {
   ['app' 'book' 'project' 'vscode' 'vscode-project']
@@ -21,7 +22,7 @@ export def open-book [] {
   | and-then { ^open $in }
 }
 
-export def M-x [] {
+export def main [] {
   let cmd = (COMMANDS | str join "\n"
                       | fzf '--height' 10 '--layout' reverse-list)
   if $cmd == 'app' {
