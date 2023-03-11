@@ -83,6 +83,9 @@ export def fzf [...args] {
   ^fzf --cycle --info hidden --ansi --color light --exact --prompt='  ' --bind right:accept,left:abort $args | str trim -r
 }
 
+export def json-cat [file: string] {
+  ^jq -C . $file | less
+}
 
 export def git-rebase-interactive [arg] {
   let commit = if ($arg | describe) == int {
@@ -170,7 +173,7 @@ export def sockets [--abbreviate-java-class-paths (-j)] {
             | upsert 'pid' { |r| $r.pid | into int }
             | rename -c ['name' 'connection']
             | reject 'command'
-            | join-table (ps -l) 'pid' 'pid'
+            | join (ps -l) 'pid'
             | if $abbreviate_java_class_paths {
                 upsert 'classpath' { |r| $r.command | java-cmd classpath }
                 | upsert 'command' { |r| $r.command | java-cmd abbreviate-classpath }
@@ -241,6 +244,7 @@ export def rg-delta [
   --fixed-strings (-F),
   --glob (-g): string,
   --ignore-case (-i),
+  --no-filename (-I),
   --files-with-matches (-l),
 ] {
   let path = if ($path | is-empty) {
@@ -259,6 +263,7 @@ export def rg-delta [
     (if $fixed_strings { '-F' } else { null })
     (if not ($glob | is-empty) { ['-g' $glob] } else { null })
     (if $ignore_case { '-i' } else { null })
+    (if $no_filename { '-I' } else { null })
   ] | flatten | where { not ($in | is-empty) })
   if $files_with_matches {
     rg -l $rg_args $pattern $path | lines
@@ -269,6 +274,20 @@ export def rg-delta [
     # print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
     rg $rg_args --json $pattern $path | delta
   }
+}
+
+export def 'set difference' [s2: table] {
+  # nushell doesn't have a hash table so quadratic time complexity
+  let s1 = $in
+  let s2 = ($s2 | sort | uniq)
+  $s1 | sort | uniq | where {|x| not ($x in $s2)}
+}
+
+export def 'set intersection' [s2: list] {
+  # nushell doesn't have a hash table so quadratic time complexity
+  let s1 = ($in | sort | uniq)
+  let s2 = ($s2 | sort | uniq)
+  $s1 | where {|x| not ($x in $s2)}
 }
 
 
@@ -331,5 +350,12 @@ export def edit [path?: string --emacs] { # -> Void
     } else {
         code-with-workspace $path
     }
+  }
+}
+
+export def kill-less [] {
+  let t = (ps | where name =~ less)
+  if not ($t | is-empty) {
+   $t | get pid | each {|n| kill -9 $n}
   }
 }

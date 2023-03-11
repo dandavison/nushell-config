@@ -15,7 +15,7 @@ export def open-app [] {
 }
 
 export def open-book [] {
-  fd -d 1 '.+\.pdf' `~/GoogleDrive/Literature/Computer Science/`
+  fd -d 1 '.+\.pdf' `~/Drive/Literature/Computer Science/`
   | fzf '-d' / '--with-nth' 7
   | str trim -r
   | and-then { ^open $in }

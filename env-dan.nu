@@ -21,3 +21,6 @@ let-env MANPATH = '/opt/homebrew/share/man'
 let-env NU_MAX_NORMALIZED_EDIT_DISTANCE_FOR_SUGGESTIONS = 0.6
 let-env NU_MIN_WORD_LENGTH_FOR_SUGGESTIONS = 3
 let-env OPEN_IN_EDITOR = '~/bin/code'
+
+
+ssh-agent -c | lines | first 2 | parse "setenv {name} {value};" | transpose -i -r -d | load-env

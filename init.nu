@@ -34,6 +34,18 @@ let-env keybindings = $env.config.keybindings ++ [
     ]
   }
   {
+    name: vscode
+    modifier: alt
+    keycode: char_z
+    mode: [emacs, vi_normal, vi_insert]
+    event: [
+      {
+        send: executehostcommand,
+        cmd: "vscode"
+      }
+    ]
+  }
+  {
     name: browse
     modifier: alt
     keycode: char_.

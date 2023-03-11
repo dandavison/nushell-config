@@ -1,8 +1,8 @@
-alias b = (git branch-by-date | ^head -n 30)
+alias b = (git branch-by-date | ^head -n 5)
 # git branch-by-date | parse -r '(?P<branch>[^ ]+) +(?P<when>.+)\n' | take 30
 alias bash = SHELL=bash bash
 alias bat = ^bat --theme GitHub --style header,grid
-alias cat  = bat --style header,grid
+alias cat = ^bat --plain --theme GitHub
 alias cd = pm cd
 alias cdd = pm cd
 alias clipboard-restart  = killall pboard
