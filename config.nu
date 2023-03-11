@@ -451,7 +451,7 @@ let-env config = {
       event: {
         until: [
           { send: menu name: completion_menu }
-          { send: menunext }
+          { edit: complete }
         ]
       }
     }
