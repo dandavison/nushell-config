@@ -180,11 +180,6 @@ export def sockets [--abbreviate-java-class-paths (-j)] {
               } else { $in }
 }
 
-export def join-table [table: table, left_on: string, right_on: string] {
-  # into df | join ($table | into df) --outer $left_on $right_on | into nu
-  $in
-}
-
 export def 'java-cmd classpath' [] {
   str replace '.* -classpath +(.+\.jar) +.*' '$1' | split row ':'
 }

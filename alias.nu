@@ -1,4 +1,4 @@
-alias b = (git branch-by-date | ^head -n 5)
+alias b = (^git branch-by-date | ^head -n 5)
 # git branch-by-date | parse -r '(?P<branch>[^ ]+) +(?P<when>.+)\n' | take 30
 alias bash = SHELL=bash bash
 alias bat = ^bat --theme GitHub --style header,grid
