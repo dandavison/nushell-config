@@ -1,10 +1,24 @@
 # Nushell Environment Config File
 
 def create_left_prompt [] {
+    mut home = ""
+    try {
+        if $nu.os-info.name == "windows" {
+            $home = $env.USERPROFILE
+        } else {
+            $home = $env.HOME
+        }
+    }
+
+    let dir = ([
+        ($env.PWD | str substring 0..($home | str length) | str replace -s $home "~"),
+        ($env.PWD | str substring ($home | str length)..)
+    ] | str join)
+
     let path_segment = if (is-admin) {
-        $"(ansi red_bold)($env.PWD)"
+        $"(ansi red_bold)($dir)"
     } else {
-        $"(ansi green_bold)($env.PWD)"
+        $"(ansi green_bold)($dir)"
     }
 
     $path_segment
@@ -24,9 +38,9 @@ let-env PROMPT_COMMAND_RIGHT = { create_right_prompt }
 
 # The prompt indicators are environmental variables that represent
 # the state of the prompt
-let-env PROMPT_INDICATOR = { "〉" }
+let-env PROMPT_INDICATOR = { "> " }
 let-env PROMPT_INDICATOR_VI_INSERT = { ": " }
-let-env PROMPT_INDICATOR_VI_NORMAL = { "〉" }
+let-env PROMPT_INDICATOR_VI_NORMAL = { "> " }
 let-env PROMPT_MULTILINE_INDICATOR = { "::: " }
 
 # Specifies how environment variables are:
