@@ -23,8 +23,8 @@ export def open-book [] {
 }
 
 export def main [] {
-  let cmd = (COMMANDS | str join "\n"
-                      | fzf '--height' 10 '--layout' reverse-list)
+  COMMANDS | str join "\n" | fzf '--height' 10 '--layout' reverse-list out> '/tmp/M-x-cmd'
+  let cmd = (open -r '/tmp/M-x-cmd')
   if $cmd == 'app' {
     open-app
   } else if $cmd == 'book' {
