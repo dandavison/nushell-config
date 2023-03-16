@@ -63,8 +63,13 @@ let-env table = ($env.config.table | merge {
   index_mode: "never"
 })
 
+let-env completions = ($env.config.completions | merge {
+  case_sensitive: true
+})
+
 let-env config = ($env.config | merge {
   color_config: $light_theme
+  completions: $env.completions
   show_banner: false
   keybindings: $env.keybindings
   table: $env.table
