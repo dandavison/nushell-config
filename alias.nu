@@ -1,8 +1,8 @@
 export def b [] {
-    git branch-by-date | head -n 5
+    git branch-by-date | head -n 10
 }
 # git branch-by-date | parse -r '(?P<branch>[^ ]+) +(?P<when>.+)\n' | take 30
-alias bash = SHELL=bash bash
+old-alias bash = SHELL=bash bash
 alias bat = ^bat --theme GitHub --style header,grid
 alias cat = ^bat --plain --theme GitHub
 alias cd = pm cd
@@ -28,11 +28,12 @@ export def gcom [] {
     git-branch origin-main | and-then { git-checkout $in }
 }
 alias gcp  = git cherry-pick
-alias gd = git-diff
-alias gdc = git-diff --cached
-alias gdom = git diff $"(git-branch origin-main)..."
-alias gds = git-diff --stat
-alias gdsc = git-diff --cached --stat
+alias gd = git diff
+alias gdc = git diff --cached
+alias gdom = git diff origin/master
+alias gdsom = git diff --stat origin/master...
+alias gds = git diff --stat
+alias gdsc = git diff --cached --stat
 alias gdcs = gdsc
 alias gfom = git fetch origin (git-branch main)
 export def gfrhom [] {
@@ -59,7 +60,7 @@ alias grb  = git rebase
 alias grbc  = grb --continue
 alias grbom = git rebase (git-branch origin-main)
 alias grh = git-reset --hard
-alias grhh = git-stash save /tmp/grhh.diff
+alias grhh = git reset --hard HEAD # git-stash save /tmp/grhh.diff
 export def grh1 [] {
     gr 1; grhh
 }

@@ -16,7 +16,7 @@ export def git-diff [revision?: string, $revision2?: string, --cached, --stat, -
 
 export def 'git-diff origin-main' [] {
     git-diff $'(git-branch origin-main)...'
-} 
+}
 
 export def 'git-branch origin-main' [] {
     git-branch-main-or-master -r 'origin/main' 'origin/master'
@@ -28,9 +28,9 @@ export def 'git-branch main' [] {
 
 def git-branch-main-or-master [name1: string, name2: string, --remote (-r)] {
     let branches = if $remote {
-        git branch -r --format %(refname:short)  
+        git branch -r --format %(refname:short)
     } else {
-        git branch --format %(refname:short)  
+        git branch --format %(refname:short)
     }
     let candidates = (
       $branches | lines
