@@ -9,7 +9,7 @@ export def git-diff [revision?: string, $revision2?: string, --cached, --stat, -
             (if not ($revision | is-empty) { $revision } else { null })
             (if not ($revision2 | is-empty) { $revision2 } else { null })
             (if $ignore_all_space { '--ignore-all-space' } else { null })
-        ] | where { not ($in | is-empty) }
+        ] | where { || not ($in | is-empty) }
     )
     git diff $args -- $env.GIT_PATHS
 }

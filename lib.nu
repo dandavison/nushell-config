@@ -163,10 +163,10 @@ export def sockets [--abbreviate-java-class-paths (-j)] {
   let input = (^lsof +c 0xFFFF -i -n -P)
   let header = ($input | lines
                        | take 1
-                       | each { str downcase | str replace ' name$' ' name state' })
+                       | each { || str downcase | str replace ' name$' ' name state' })
   let body = ($input | lines
                      | skip 1
-                     | each { str replace '([^)])$' '$1 (NONE)' | str replace ' \((.+)\)$' ' $1' })
+                     | each { || str replace '([^)])$' '$1 (NONE)' | str replace ' \((.+)\)$' ' $1' })
   [$header] | append $body
             | to text
             | detect columns
@@ -259,7 +259,7 @@ export def rg-delta [
     (if not ($glob | is-empty) { ['-g' $glob] } else { null })
     (if $ignore_case { '-i' } else { null })
     (if $no_filename { '-I' } else { null })
-  ] | flatten | where { not ($in | is-empty) })
+  ] | flatten | where { || not ($in | is-empty) })
   if $files_with_matches {
     rg -l $rg_args $pattern $path | lines
                                   | each {|p| $'file-line-column://($env.PWD)/($p)'

@@ -43,6 +43,6 @@ def or-error-style [] {
     if ($env.LAST_EXIT_CODE == 0) { $in } else { ansi red_bold }
 }
 
-let-env PROMPT_COMMAND = { prompt-create-left-prompt }
-let-env PROMPT_COMMAND_RIGHT = { $nothing }
-let-env PROMPT_INDICATOR = { $" (ansi green_bold | or-error-style)〉" }
+let-env PROMPT_COMMAND = { || prompt-create-left-prompt }
+let-env PROMPT_COMMAND_RIGHT = { || $nothing }
+let-env PROMPT_INDICATOR = { || $" (ansi green_bold | or-error-style)〉" }
