@@ -247,7 +247,7 @@ export def rg-delta [
     (if not ($after_context | is-empty) { ['-A' $after_context] } else { null })
     (if not ($context | is-empty) { ['-C' $context] } else { null })
     (if $fixed_strings { '-F' } else { null })
-    (if not ($glob | is-empty) { ['-g' $glob] } else { null })
+    (if not ($glob | is-empty) { ['-g' $'"($glob)"'] } else { null })
     (if $ignore_case { '-i' } else { null })
     (if $no_filename { '-I' } else { null })
   ] | flatten | where { || not ($in | is-empty) })
