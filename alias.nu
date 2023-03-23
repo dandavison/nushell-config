@@ -1,7 +1,7 @@
-export def b [] {
-    git branch-by-date | head -n 10
+export def git-branch-by-date [] {
+    git branch-by-date | lines | parse '{branch}@{when}'
 }
-# git branch-by-date | parse -r '(?P<branch>[^ ]+) +(?P<when>.+)\n' | take 30
+export def b [] { git-branch-by-date | first 10 }
 old-alias bash = SHELL=bash bash
 alias bat = ^bat --theme GitHub --style header,grid
 alias cat = ^bat --plain --theme GitHub
@@ -24,6 +24,8 @@ export def gcm [] {
     git-branch main | and-then { git-checkout $in }
 }
 alias gcoa  = git commit --amend
+alias gcoan  = git commit --amend --no-edit
+alias gcon  = git commit --no-edit
 export def gcom [] {
     git-branch origin-main | and-then { git-checkout $in }
 }
