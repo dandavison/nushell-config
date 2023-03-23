@@ -232,7 +232,7 @@ export def pid [] {
 
 export def rg-delta [
   pattern: string,
-  path: string = "",
+  path: string = ".",
   --before-context (-A): int,
   --after-context (-B): int,
   --context (-C): int,
@@ -242,15 +242,6 @@ export def rg-delta [
   --no-filename (-I),
   --files-with-matches (-l),
 ] {
-  let path = if ($path | is-empty) {
-    if ('GIT_DEFAULT_PATH' in $env) {
-      $env.GIT_DEFAULT_PATH
-    } else {
-      '.'
-    }
-  } else {
-    $path
-  }
   let rg_args = ([
     (if not ($before_context | is-empty) { ['-B' $before_context] } else { null })
     (if not ($after_context | is-empty) { ['-A' $after_context] } else { null })
