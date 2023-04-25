@@ -230,6 +230,18 @@ export def pid [] {
   pstree | rg -B 5 $nu.pid
 }
 
+export def fd [
+  pattern: string,
+  path: string = ".",
+] {
+  ^fd --color=always $pattern $path
+  | lines
+  | each {
+    |s| $'vscode-insiders://file/($s | ansi strip | path expand)' | str hyperlink $s
+  }
+  | to text
+}
+
 export def rg-delta [
   pattern: string,
   path: string = ".",

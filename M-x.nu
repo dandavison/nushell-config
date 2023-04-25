@@ -8,7 +8,7 @@ export def COMMANDS [] {
 }
 
 export def open-app [] {
-  fd -d 1 '.+\.app' /Applications /System/Applications /System/Applications/Utilities
+  ^fd -d 1 '.+\.app' /Applications /System/Applications /System/Applications/Utilities
     | rg -r '$2$1' '^(.*/([^/]+)\.app)/$'
     | fzf '--with-nth' 1 '-d' /
     | str replace '[^/]+/' '/'
@@ -16,7 +16,7 @@ export def open-app [] {
 }
 
 export def open-book [] {
-  fd -d 1 '.+\.pdf' `~/Drive/Literature/Computer Science/`
+  ^fd -d 1 '.+\.pdf' `~/Drive/Literature/Computer Science/`
   | fzf '-d' / '--with-nth' 7
   | str trim -r
   | and-then { ^open $in }
