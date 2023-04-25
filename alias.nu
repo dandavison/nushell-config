@@ -4,6 +4,10 @@ export def git-branch-by-date [] {
 export def b [] { git-branch-by-date | first 10 }
 old-alias bash = SHELL=bash bash
 alias bat = ^bat --theme GitHub --style header,grid
+# def 'bazel query' [query: string] {
+#     ^bazel query --noshow_progress --noshow_loading_progress --ui_event_filters $"'($query)'"
+# }
+# alias bazel-query = ^bazel query --noshow_progress --noshow_loading_progress --ui_event_filters
 alias cat = ^bat --plain --theme GitHub
 alias cd = pm cd
 alias cdd = pm cd
@@ -33,9 +37,9 @@ alias gcp  = git cherry-pick
 alias gd = git diff
 alias gdc = git diff --cached
 alias gdom = git diff origin/master
-alias gdsom = git diff --stat origin/master...
-alias gds = git diff --stat
-alias gdsc = git diff --cached --stat
+alias gds = git diff --stat=250
+alias gdsom = gds origin/master...
+alias gdsc = gds --cached
 alias gdcs = gdsc
 alias gfom = git fetch origin (git-branch main)
 export def gfrhom [] {

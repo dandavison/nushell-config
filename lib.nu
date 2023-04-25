@@ -270,7 +270,7 @@ export def rg-delta [
                                   | to text
   } else {
     # print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
-    rg $rg_args --json $pattern $path | delta
+    rg $rg_args --json $pattern $path | delta --hunk-header-decoration-style=none --hunk-header-style='file syntax' --hunk-header-file-style=magenta
   }
 }
 
@@ -346,7 +346,7 @@ export def edit [path?: string --emacs] { # -> Void
     if $emacs {
         ^emacsclient -n $path
     } else {
-        code-with-workspace $path
+        code-with-workspace ($path | path expand)
     }
   }
 }

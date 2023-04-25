@@ -461,7 +461,7 @@ let-env config = {
     {
       name: undo_or_previous_page
       modifier: control
-      keycode: char_z
+      keycode: char_u
       mode: emacs
       event: {
         until: [
@@ -484,7 +484,7 @@ let-env config = {
     {
       name: unix-line-discard
       modifier: control
-      keycode: char_u
+      keycode: char_z
       mode: [emacs, vi_normal, vi_insert]
       event: {
         until: [
