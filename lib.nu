@@ -70,7 +70,7 @@ export def exec-async [commands: string] {
 }
 
 export def do-async [block: block] {
-  # block may call bultins and external commands only
+  # block may call builtins and external commands only
   bash -c $"nu -c 'do (view-source $block)' &"
 }
 
@@ -233,13 +233,17 @@ export def pid [] {
 export def fd [
   pattern: string,
   path: string = ".",
+  --full_path (-p): bool,
 ] {
-  ^fd --color=always $pattern $path
-  | lines
-  | each {
-    |s| $'vscode-insiders://file/($s | ansi strip | path expand)' | str hyperlink $s
-  }
-  | to text
+  let fd_args = ([
+    (if $full_path { '-p' } else { null })
+  ] | flatten | where { || not ($in | is-empty) })
+
+  ^fd --color=always $fd_args $pattern $path | lines
+                                             | each {
+                                                 |s| $'vscode-insiders://file/($s | ansi strip | path expand)' | str hyperlink $s
+                                               }
+                                             | to text
 }
 
 export def rg-delta [
@@ -265,11 +269,11 @@ export def rg-delta [
   ] | flatten | where { || not ($in | is-empty) })
   if $files_with_matches {
     rg -l $rg_args $pattern $path | lines
-                                  | each {|p| $'file-line-column://($env.PWD)/($p)'
-                                  | str hyperlink $p}
+                                  | each {|s| $'vscode-insiders://file/($s | path expand)' | str hyperlink $s}
                                   | to text
   } else {
     # print $'rg ($rg_args | str join " ") --json ($pattern) ($path) | delta'
+    osascript -e 'tell application "System Events" to tell process "Alacritty" to keystroke "." using command down'
     rg $rg_args --json $pattern $path | delta --hunk-header-decoration-style=none --hunk-header-style='file syntax' --hunk-header-file-style=magenta
   }
 }
@@ -289,7 +293,6 @@ export def 'set intersection' [s2: list] {
 }
 
 
-export def 'str hyperlink' [text: string] {
   # fn format_osc8_hyperlink(url: &str, text: &str) -> String {
   #     format!(
   #         "{osc}8;;{url}{st}{text}{osc}8;;{st}",
@@ -299,6 +302,8 @@ export def 'str hyperlink' [text: string] {
   #         st = "\x1b\\"
   #     )
   # }
+
+export def 'str hyperlink' [text: string] {
   let url = $in
   let osc8 = (ansi -o '8;;')
   let st = (ansi st)

@@ -1,5 +1,5 @@
 export def git-branch-by-date [] {
-    git branch-by-date | lines | parse '{branch}@{when}'
+    git branch-by-date "" --no-table | lines | parse '{branch}@{when}'
 }
 export def b [] { git-branch-by-date | first 10 }
 old-alias bash = SHELL=bash bash
