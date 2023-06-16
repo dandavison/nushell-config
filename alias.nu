@@ -2,7 +2,7 @@ export def git-branch-by-date [] {
     git branch-by-date "" --no-table | lines | parse '{branch}@{when}'
 }
 export def b [] { git-branch-by-date | first 10 }
-old-alias bash = SHELL=bash bash
+# alias bash = SHELL=bash bash
 alias bat = ^bat --theme GitHub --style header,grid
 # def 'bazel query' [query: string] {
 #     ^bazel query --noshow_progress --noshow_loading_progress --ui_event_filters $"'($query)'"
@@ -83,15 +83,14 @@ export def griom [] {
 }
 alias grba  = grb --abort
 alias grm = git remote
-alias gsta = git-stash apply
-alias gsts = git-stash save
-alias gstsp = git-stash show
+alias gsta = git stash apply
+alias gsts = git stash save
+alias gstsp = git stash show
 alias gu = git status -uall
-alias ha = $nu.scope.aliases
 alias hc = help commands
 alias hf = help-find
 export def lss [] {
-    ls | get name | str collect $"  "
+    ls | get name | str join $"  "
 }
 alias mk = mkdir
 alias np  = ping -c 1 www.gov.uk

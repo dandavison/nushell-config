@@ -82,7 +82,6 @@ use lib.nu *
 use M-x.nu *
 use ~/src/pm/pm.nu *
 use git.nu *
-use git-stash.nu *
 source prompt.nu
 source init-local.nu
 source alias.nu
