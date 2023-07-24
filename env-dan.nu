@@ -3,7 +3,7 @@ let-env NU_LIB_DIRS = [
   ($nu.config-path | path dirname | path expand | path join "lib")
 ]
 let-env PATH = (
-  '/Users/dan/.pyenv/shims:/Users/dan/bin:/Users/dan/.local/bin:/Users/dan/src/emacs-config/bin:/Users/dan/.cargo/bin:/opt/homebrew/opt/postgresql/bin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/sbin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/dan/.npm-global/bin'
+  '/Users/dan/.pyenv/shims:/Users/dan/bin:/Users/dan/.local/bin:/Users/dan/src/devenv/emacs-config/bin:/Users/dan/.cargo/bin:/opt/homebrew/opt/postgresql/bin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/sbin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/dan/.npm-global/bin'
   | split row ':'
 )
 let-env ALTERNATE_EDITOR = 'emacs -nw -q'

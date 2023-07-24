@@ -200,9 +200,9 @@ export def nu-binary [which?: string] {
   let link = '~/bin/nu'
   if ($which != null) {
     let target = if $which == 'release' {
-      '~/src/nushell/nushell/target/release/nu'
+      '~/src/devenv/nushell/nushell/target/release/nu'
     } else if $which == 'debug' {
-      '~/src/nushell/nushell/target/debug/nu'
+      '~/src/devenv/nushell/nushell/target/debug/nu'
     } else if $which == 'homebrew' {
       '/usr/local/bin/nu'
     } else {
